@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { MdQuiz } from 'react-icons/md';
 import SingleQuestion from './SingleQuestion';
 import { QuizQuestion } from '@/types/course.type';
+import Swal from 'sweetalert2';
 
 type QuizContentProps = {
     title: string;
@@ -44,6 +45,36 @@ const QuizContent = ({
         setScore(correctCount);
         setIsSubmitted(true);
         onComplete(correctCount, questions.length);
+
+        Swal.fire({
+            title: 'Quiz Completed',
+            icon: 'success',
+            html: `
+                    <div class='space-y-2'>
+                        <div>
+                            <span class="font-semibold">Quiz:</span>
+                            ${title}
+                        </div>
+                        <div>
+                            <span class="font-semibold">
+                                Your Score:
+                            </span>
+                            ${correctCount}/${questions.length}
+                        </div>
+                        <p>
+                            ${
+                                correctCount === questions.length
+                                    ? 'Perfect! Great job!'
+                                    : correctCount >= questions.length / 2
+                                    ? 'Good work! Keep learning!'
+                                    : 'Keep practicing, you can do better!'
+                            }
+                        </p>
+                    </div>
+                `,
+            focusConfirm: false,
+            confirmButtonText: 'Great!',
+        });
     };
 
     const allAnswered = questions.every(
@@ -98,19 +129,6 @@ const QuizContent = ({
                             Submit Quiz
                         </Button>
                     </div>
-
-                    //                     <Dialog>
-                    //   <DialogTrigger>Open</DialogTrigger>
-                    //   <DialogContent>
-                    //     <DialogHeader>
-                    //       <DialogTitle>Are you absolutely sure?</DialogTitle>
-                    //       <DialogDescription>
-                    //         This action cannot be undone. This will permanently delete your account
-                    //         and remove your data from our servers.
-                    //       </DialogDescription>
-                    //     </DialogHeader>
-                    //   </DialogContent>
-                    // </Dialog>
                 )}
             </div>
         </div>
