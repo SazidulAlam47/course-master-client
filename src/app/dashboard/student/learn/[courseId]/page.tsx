@@ -1,146 +1,211 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import Link from 'next/link';
 import Container from '@/components/Container';
+import { Button } from '@/components/ui/button';
 import VideoPlayer from './components/VideoPlayer';
-import LessonSidebar, { Module, Lesson } from './components/LessonSidebar';
+import LessonSidebar from './components/LessonSidebar';
 import NavigationButtons from './components/NavigationButtons';
+import AssignmentContent from './components/AssignmentContent';
+import QuizContent from './components/QuizContent';
+import { FaArrowLeft } from 'react-icons/fa6';
+import { Lesson } from '@/types/course.type';
 
-// Mock course data - replace with actual API call
-const mockCourseData: Module[] = [
+const lessonsData: Lesson[] = [
     {
-        id: '0',
-        title: '0',
-        lessons: [
+        title: 'How to access the course',
+        duration: '12 min',
+        type: 'video',
+        videoId: 'dQw4w9WgXcQ',
+    },
+    {
+        title: 'How To Practice And Build Your Own',
+        duration: '10 min',
+        type: 'video',
+        videoId: 'tVzUXW6siu0',
+    },
+    {
+        title: 'Assignment 1',
+        duration: '',
+        type: 'assignment',
+        task: 'https://drive.google.com/drive/folders/19hcFwr3WShODOfR7hXJ1oQogs5LKDX8L?usp=sharing',
+    },
+    {
+        title: 'how to get support effectively',
+        duration: '15 min',
+        type: 'video',
+        videoId: 'tVzUXW6siu0',
+    },
+    {
+        title: 'HTML Quiz',
+        duration: '',
+        type: 'quiz',
+        questions: [
             {
-                id: '1',
-                title: 'How to access the course',
-                duration: '12 min',
-                videoId: 'dQw4w9WgXcQ',
-                isCompleted: false,
+                question: 'What does HTML stand for?',
+                options: [
+                    'Hyper Text Markup Language',
+                    'Hyperlink and Text Markup Language',
+                    'Home Tool Markup Language',
+                    'Hyperlink Text Manager Link',
+                ],
+                correctAnswer: 0,
             },
             {
-                id: '2',
-                title: 'How To Practice And Build Your Own',
-                duration: '10 min',
-                videoId: 'tVzUXW6siu0',
-                isCompleted: false,
+                question: 'Which HTML tag is used to define a paragraph?',
+                options: ['<para>', '<p>', '<paragraph>', '<pg>'],
+                correctAnswer: 1,
             },
             {
-                id: '3',
-                title: 'Everything You Need To Know About Assignment',
-                duration: '12 min',
-                videoId: 'dQw4w9WgXcQ',
-                isCompleted: false,
+                question:
+                    'Which tag is used to display the largest heading in HTML?',
+                options: ['<h6>', '<head>', '<h1>', '<heading>'],
+                correctAnswer: 2,
             },
             {
-                id: '4',
-                title: 'how to get support effectively',
-                duration: '15 min',
-                videoId: 'tVzUXW6siu0',
-                isCompleted: false,
-            },
-            {
-                id: '5',
-                title: 'Install Visual Studio Code Node Git Scm And Github Account',
-                duration: '13 min',
-                videoId: 'dQw4w9WgXcQ',
-                isCompleted: false,
-            },
-            {
-                id: '6',
-                title: '(mac user only) Install Visual Studio Code Node Git SCM And Github Account',
-                duration: '15 min',
-                videoId: 'tVzUXW6siu0',
-                isCompleted: false,
-            },
-            {
-                id: '7',
-                title: 'VS Code Extensions And Settings',
-                duration: '10 min',
-                videoId: 'tVzUXW6siu0',
-                isCompleted: false,
-            },
-            {
-                id: '8',
-                title: 'Introduction To HTML',
-                duration: '18 min',
-                videoId: 'tVzUXW6siu0',
-                isCompleted: false,
-            },
-            {
-                id: '9',
-                title: 'HTML Basic Structure And Tags',
-                duration: '20 min',
-                videoId: 'tVzUXW6siu0',
-                isCompleted: false,
+                question:
+                    'What is the correct HTML tag for inserting a line break?',
+                options: ['<lb>', '<break>', '<br>', '<line>'],
+                correctAnswer: 2,
             },
         ],
+    },
+    {
+        title: '(mac user only) Install Visual Studio Code Node Git SCM And Github Account',
+        duration: '15 min',
+        type: 'video',
+        videoId: 'tVzUXW6siu0',
+    },
+    {
+        title: 'VS Code Extensions And Settings',
+        duration: '10 min',
+        type: 'video',
+        videoId: 'tVzUXW6siu0',
+    },
+    {
+        title: 'Introduction To HTML',
+        duration: '18 min',
+        type: 'video',
+        videoId: 'tVzUXW6siu0',
+    },
+    {
+        title: 'HTML Basic Structure And Tags',
+        duration: '20 min',
+        type: 'video',
+        videoId: 'tVzUXW6siu0',
     },
 ];
 
 const LearnPage = () => {
-    const [completedLessons, setCompletedLessons] = useState<string[]>([]);
-    const [currentLessonId, setCurrentLessonId] = useState<string>(
-        mockCourseData[0]?.lessons[0]?.id || ''
+    const fetchedCurrentLessonIndex = 4;
+
+    const [completedLessonsIndex, setCompletedLessonsIndex] = useState<number>(
+        fetchedCurrentLessonIndex || 0
     );
 
-    // Flatten all lessons for easy navigation
-    const allLessons = useMemo(() => {
-        return mockCourseData.flatMap((module) => module.lessons);
-    }, []);
+    const [currentLessonIndex, setCurrentLessonIndex] = useState<number>(
+        fetchedCurrentLessonIndex || 0
+    );
+
+    const allLessons = lessonsData;
 
     const totalLessons = allLessons.length;
-
-    const currentLessonIndex = allLessons.findIndex(
-        (lesson) => lesson.id === currentLessonId
-    );
-
     const currentLesson = allLessons[currentLessonIndex];
 
-    const handleLessonSelect = (lesson: Lesson) => {
-        setCurrentLessonId(lesson.id);
+    const handleLessonSelect = (index: number) => {
+        setCurrentLessonIndex(index);
     };
 
     const handlePrevious = () => {
-        if (currentLessonIndex > 0) {
-            setCurrentLessonId(allLessons[currentLessonIndex - 1].id);
-        }
+        setCurrentLessonIndex(currentLessonIndex - 1);
     };
 
     const handleNext = () => {
-        if (currentLessonIndex < allLessons.length - 1) {
-            setCurrentLessonId(allLessons[currentLessonIndex + 1].id);
-        }
+        setCurrentLessonIndex(currentLessonIndex + 1);
     };
 
     const handleMarkComplete = () => {
-        if (completedLessons.includes(currentLessonId)) {
-            setCompletedLessons((prev) =>
-                prev.filter((id) => id !== currentLessonId)
-            );
-        } else {
-            setCompletedLessons((prev) => [...prev, currentLessonId]);
+        setCompletedLessonsIndex(completedLessonsIndex + 1);
+        if (completedLessonsIndex < lessonsData.length - 1) {
+            setCurrentLessonIndex(completedLessonsIndex + 1);
         }
     };
 
-    const isCurrentCompleted = completedLessons.includes(currentLessonId);
+    const handleAssignmentSubmit = (answer: string) => {
+        console.log('Assignment submitted:', answer);
+        setCompletedLessonsIndex(completedLessonsIndex + 1);
+    };
+
+    const handleQuizComplete = (score: number, total: number) => {
+        console.log(`Quiz completed: ${score}/${total}`);
+        setCompletedLessonsIndex(completedLessonsIndex + 1);
+    };
+
+    const isCurrentCompleted = currentLessonIndex < completedLessonsIndex;
     const hasPrevious = currentLessonIndex > 0;
     const hasNext = currentLessonIndex < allLessons.length - 1;
+
+    const canMarkComplete = useMemo(() => {
+        if (!currentLesson) return false;
+        if (currentLessonIndex !== completedLessonsIndex) return false;
+        return currentLesson.type === 'video';
+    }, [currentLesson, currentLessonIndex, completedLessonsIndex]);
+
+    const canGoNext = currentLessonIndex < completedLessonsIndex;
+
+    const renderContent = () => {
+        if (!currentLesson) return null;
+
+        switch (currentLesson.type) {
+            case 'assignment':
+                return (
+                    <AssignmentContent
+                        title={currentLesson.title}
+                        task={currentLesson.task || ''}
+                        onSubmit={handleAssignmentSubmit}
+                        isCompleted={isCurrentCompleted}
+                    />
+                );
+            case 'quiz':
+                return (
+                    <QuizContent
+                        title={currentLesson.title}
+                        questions={currentLesson.questions || []}
+                        onComplete={handleQuizComplete}
+                        isCompleted={isCurrentCompleted}
+                    />
+                );
+            default:
+                return (
+                    <VideoPlayer
+                        videoId={currentLesson.videoId || ''}
+                        title={`${currentLessonIndex + 1}. ${
+                            currentLesson.title
+                        }`}
+                    />
+                );
+        }
+    };
 
     return (
         <div className="min-h-screen bg-gray-50">
             <Container className="py-6">
+                <div className="mb-6">
+                    <Link href="/dashboard/student">
+                        <Button
+                            variant="outline"
+                            className="border-gray-300 text-gray-700 hover:bg-gray-100 hover:text-gray-900 bg-white"
+                        >
+                            <FaArrowLeft className="w-4 h-4 mr-2" />
+                            Back to Dashboard
+                        </Button>
+                    </Link>
+                </div>
+
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div className="lg:col-span-2 space-y-4">
-                        {currentLesson && (
-                            <VideoPlayer
-                                videoId={currentLesson.videoId}
-                                title={`${currentLessonIndex + 1}. ${
-                                    currentLesson.title
-                                }`}
-                            />
-                        )}
+                        {renderContent()}
                         <NavigationButtons
                             onPrevious={handlePrevious}
                             onNext={handleNext}
@@ -148,13 +213,15 @@ const LearnPage = () => {
                             hasPrevious={hasPrevious}
                             hasNext={hasNext}
                             isCurrentCompleted={isCurrentCompleted}
+                            canMarkComplete={canMarkComplete}
+                            canGoNext={canGoNext}
                         />
                     </div>
                     <div className="lg:col-span-1">
                         <LessonSidebar
-                            modules={mockCourseData}
-                            currentLessonId={currentLessonId}
-                            completedLessons={completedLessons}
+                            lessons={lessonsData}
+                            currentLessonIndex={currentLessonIndex}
+                            completedLessonsIndex={completedLessonsIndex}
                             totalLessons={totalLessons}
                             onLessonSelect={handleLessonSelect}
                         />

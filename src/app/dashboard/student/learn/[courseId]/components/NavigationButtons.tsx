@@ -10,6 +10,8 @@ type NavigationButtonsProps = {
     hasPrevious: boolean;
     hasNext: boolean;
     isCurrentCompleted: boolean;
+    canMarkComplete: boolean;
+    canGoNext: boolean;
 };
 
 const NavigationButtons = ({
@@ -19,6 +21,8 @@ const NavigationButtons = ({
     hasPrevious,
     hasNext,
     isCurrentCompleted,
+    canMarkComplete,
+    canGoNext,
 }: NavigationButtonsProps) => {
     return (
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
@@ -36,7 +40,7 @@ const NavigationButtons = ({
                     <Button
                         variant="outline"
                         onClick={onNext}
-                        disabled={!hasNext}
+                        disabled={!hasNext || !canGoNext}
                         className="border-gray-300 text-gray-700 hover:bg-gray-100 hover:text-gray-900 bg-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         Next
@@ -46,11 +50,12 @@ const NavigationButtons = ({
 
                 <Button
                     onClick={onMarkComplete}
+                    disabled={!canMarkComplete || isCurrentCompleted}
                     className={`${
                         isCurrentCompleted
                             ? 'bg-green-500 hover:bg-green-600'
                             : 'bg-[#1b7ad2] hover:bg-[#1565b8]'
-                    } text-white transition-colors`}
+                    } text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
                     <FaCheck className="w-4 h-4 mr-2" />
                     {isCurrentCompleted ? 'Completed' : 'Mark as Completed'}

@@ -16,3 +16,20 @@ export type TCourse = {
         duration: string;
     }[];
 };
+
+export type LessonType = 'video' | 'assignment' | 'quiz';
+
+export type QuizQuestion = {
+    question: string;
+    options: string[];
+    correctAnswer: number;
+};
+
+export type Lesson = {
+    title: string;
+    duration: string;
+    type: LessonType;
+    videoId?: string;
+    task?: string;
+    questions?: QuizQuestion[];
+};
