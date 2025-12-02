@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 
 export type EnrolledCourseProps = {
     id: string;
@@ -48,12 +49,10 @@ const EnrolledCourseCard = ({ course }: { course: EnrolledCourseProps }) => {
                                     {course.progress}%
                                 </span>
                             </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2.5">
-                                <div
-                                    className="bg-gradient-to-r from-[#1b7ad2] to-[#3b9aec] h-2.5 rounded-full transition-all duration-500"
-                                    style={{ width: `${course.progress}%` }}
-                                />
-                            </div>
+                            <Progress
+                                value={course.progress}
+                                className="h-2.5 bg-gray-200 [&>[data-slot=progress-indicator]]:bg-[#1b7ad2]"
+                            />
                         </div>
                     </div>
 
@@ -66,7 +65,7 @@ const EnrolledCourseCard = ({ course }: { course: EnrolledCourseProps }) => {
                                 Course Outline
                             </Button>
                         </Link>
-                        <Link href={`/courses/${course.id}/learn`}>
+                        <Link href={`/dashboard/student/learn/${course.id}`}>
                             <Button className="bg-[#1b7ad2] hover:bg-[#1565b8] text-white">
                                 {course.progress > 0
                                     ? 'Continue Learning'
