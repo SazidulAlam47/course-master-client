@@ -1,7 +1,8 @@
+import AdminSidebar from '@/components/AdminPages/AdminSidebar';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import AdminSidebar from './components/AdminSidebar';
+import { ReactNode } from 'react';
 
-const AdminDashboardLayout = ({ children }: { children: React.ReactNode }) => {
+const AdminDashboardLayout = ({ children }: { children: ReactNode }) => {
     return (
         <SidebarProvider>
             <div className="flex min-h-screen w-full">

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
     Sidebar,
     SidebarContent,
@@ -12,25 +12,41 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
     SidebarHeader,
+    SidebarFooter,
 } from '@/components/ui/sidebar';
 import { adminSidebarItems } from '@/constants/adminDashboard.constant';
-import { LayoutDashboard } from 'lucide-react';
+import { LayoutDashboard, LogOut } from 'lucide-react';
+import Image from 'next/image';
+import logo from '@/assets/logo-square.png';
+import { toast } from 'sonner';
+import { signOut } from 'next-auth/react';
 
 const AdminSidebar = () => {
+    const router = useRouter();
     const pathname = usePathname();
+
+    const handleLogout = async () => {
+        const toastId = toast.loading('Logging out...');
+        try {
+            const res = await signOut({
+                redirect: false,
+            });
+            router.push(res.url);
+            toast.success('Logged out successfully!', { id: toastId });
+        } catch (error: any) {
+            toast.error(error.message || error.data || 'Something went wrong', {
+                id: toastId,
+            });
+        }
+    };
 
     return (
         <Sidebar className="border-r border-gray-200">
             <SidebarHeader className="border-b border-gray-200 p-4">
-                <Link
-                    href="/dashboard/admin"
-                    className="flex items-center gap-2"
-                >
-                    <div className="w-8 h-8 bg-[#1b7ad2] rounded-lg flex items-center justify-center">
-                        <LayoutDashboard className="w-5 h-5 text-white" />
-                    </div>
+                <Link href="/" className="flex items-center gap-2">
+                    <Image src={logo} alt="logo" width={50} height={50} />
                     <span className="font-bold text-lg text-gray-900">
-                        Admin Panel
+                        Course Master
                     </span>
                 </Link>
             </SidebarHeader>
@@ -67,6 +83,25 @@ const AdminSidebar = () => {
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
+
+            <SidebarFooter className="border-t border-gray-200 p-4">
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton
+                            asChild
+                            className="mx-2 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600"
+                        >
+                            <button
+                                onClick={handleLogout}
+                                className="cursor-pointer"
+                            >
+                                <LogOut className="w-5 h-5" />
+                                <span>Logout</span>
+                            </button>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarFooter>
         </Sidebar>
     );
 };
