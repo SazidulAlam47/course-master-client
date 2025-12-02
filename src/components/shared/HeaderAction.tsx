@@ -26,6 +26,8 @@ const HeaderAction = ({ initialSession }: HeaderActionProps) => {
 
     const currentSession = status === 'loading' ? initialSession : session;
 
+    const role = currentSession?.user.role;
+
     const handleLogout = async () => {
         const toastId = toast.loading('Logging out...');
         try {
@@ -60,6 +62,9 @@ const HeaderAction = ({ initialSession }: HeaderActionProps) => {
                             {session?.user.name}
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
+                        <Link href={role ? `/dashboard/${role}` : '/dashboard'}>
+                            <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                        </Link>
                         <Link href="/dashboard/profile">
                             <DropdownMenuItem>View Profile</DropdownMenuItem>
                         </Link>
