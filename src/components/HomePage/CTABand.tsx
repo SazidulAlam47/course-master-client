@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { ChevronRight } from 'lucide-react';
 import Container from '../Container';
+import Link from 'next/link';
 
 const CTABand = () => {
     return (
@@ -13,13 +14,15 @@ const CTABand = () => {
                     Join thousands of learners who have transformed their
                     careers with Course Master
                 </p>
-                <Button
-                    size="lg"
-                    className="bg-white text-[#1b7ad2] hover:bg-gray-100"
-                >
-                    Start Learning
-                    <ChevronRight className="w-4 h-4 ml-2" />
-                </Button>
+                <Link href="/courses">
+                    <Button
+                        size="lg"
+                        className="bg-white text-[#1b7ad2] hover:bg-gray-100"
+                    >
+                        Start Learning
+                        <ChevronRight className="w-4 h-4 ml-2" />
+                    </Button>
+                </Link>
             </Container>
         </section>
     );

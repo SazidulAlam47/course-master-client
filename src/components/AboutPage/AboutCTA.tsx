@@ -1,6 +1,7 @@
 import Container from '@/components/Container';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const AboutCTA = () => {
     return (
@@ -17,16 +18,20 @@ const AboutCTA = () => {
                             Hero.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <Button size="lg" className="px-8">
-                                Get Started Today
-                            </Button>
-                            <Button
-                                size="lg"
-                                variant="outline"
-                                className="border-gray-300 text-gray-700 hover:bg-gray-50 bg-transparent"
-                            >
-                                Browse Courses
-                            </Button>
+                            <Link href="/courses">
+                                <Button size="lg" className="px-8">
+                                    Get Started Today
+                                </Button>
+                            </Link>
+                            <Link href="/courses">
+                                <Button
+                                    size="lg"
+                                    variant="outline"
+                                    className="border-gray-300 text-gray-700 hover:bg-gray-50 bg-transparent"
+                                >
+                                    Browse Courses
+                                </Button>
+                            </Link>
                         </div>
                     </CardContent>
                 </Card>
