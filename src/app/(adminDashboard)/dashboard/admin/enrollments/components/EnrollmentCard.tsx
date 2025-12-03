@@ -1,7 +1,7 @@
-import { Users } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import getInitials from '@/utils/getInitials';
 
 type Enrollment = {
     id: string;
@@ -26,15 +26,6 @@ const getStatusColor = (status: string) => {
         default:
             return 'bg-gray-100 text-gray-700';
     }
-};
-
-const getInitials = (name: string) => {
-    return name
-        .split(' ')
-        .map((n) => n[0])
-        .join('')
-        .toUpperCase()
-        .slice(0, 2);
 };
 
 const EnrollmentCard = ({ enrollment }: { enrollment: Enrollment }) => {

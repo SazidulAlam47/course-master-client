@@ -9,6 +9,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+import getInitials from '@/utils/getInitials';
 
 type AssignmentCardProps = {
     submission: {
@@ -38,15 +39,6 @@ const getStatusColor = (status: string) => {
         default:
             return 'bg-gray-100 text-gray-700';
     }
-};
-
-const getInitials = (name: string) => {
-    return name
-        .split(' ')
-        .map((n) => n[0])
-        .join('')
-        .toUpperCase()
-        .slice(0, 2);
 };
 
 const AssignmentCard = ({ submission }: AssignmentCardProps) => {

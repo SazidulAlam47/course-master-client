@@ -16,7 +16,7 @@ const CourseWhatYouWillLearn = ({ items }: CourseWhatYouWillLearnProps) => (
                     key={index}
                     className="flex items-start gap-3 p-4 bg-green-50 rounded-lg"
                 >
-                    <FaCheck className="text-green-500 mt-1 flex-shrink-0" />
+                    <FaCheck className="text-green-500 mt-1 shrink-0" />
                     <span className="text-gray-700">{item}</span>
                 </div>
             ))}

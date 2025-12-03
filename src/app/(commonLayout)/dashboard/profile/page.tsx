@@ -4,20 +4,12 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import authOptions from '@/nextAuth/authOptions';
 import capitalize from '@/utils/capitalize';
+import getInitials from '@/utils/getInitials';
 import { getServerSession } from 'next-auth';
 
 const ProfilePage = async () => {
     const session = await getServerSession(authOptions);
     const user = session?.user;
-
-    const getInitials = (name: string) => {
-        return name
-            .split(' ')
-            .map((n) => n[0])
-            .join('')
-            .toUpperCase()
-            .slice(0, 2);
-    };
 
     return (
         <Container className="py-10">

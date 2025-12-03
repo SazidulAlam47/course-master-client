@@ -7,24 +7,13 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { IInstructor } from '@/types';
+import getInitials from '@/utils/getInitials';
+import UpdateInstructor from './UpdateInstructor';
+import DeleteInstructor from './DeleteInstructor';
 
 type InstructorCardProps = {
-    instructor: {
-        id: string;
-        name: string;
-        avatar?: string;
-        title: string;
-        bio: string;
-    };
-};
-
-const getInitials = (name: string) => {
-    return name
-        .split(' ')
-        .map((n) => n[0])
-        .join('')
-        .toUpperCase()
-        .slice(0, 2);
+    instructor: IInstructor;
 };
 
 const InstructorCard = ({ instructor }: InstructorCardProps) => {
@@ -58,16 +47,8 @@ const InstructorCard = ({ instructor }: InstructorCardProps) => {
                     {instructor.bio}
                 </p>
                 <div className="flex gap-2">
-                    <Button variant="outline" size="sm">
-                        Edit
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                    >
-                        Delete
-                    </Button>
+                    <UpdateInstructor instructor={instructor} />
+                    <DeleteInstructor instructor={instructor} />
                 </div>
             </CardContent>
         </Card>

@@ -70,15 +70,6 @@ const getStatusColor = (status: string) => {
     }
 };
 
-const getInitials = (name: string) => {
-    return name
-        .split(' ')
-        .map((n) => n[0])
-        .join('')
-        .toUpperCase()
-        .slice(0, 2);
-};
-
 const EnrollmentManagementPage = () => {
     return (
         <div className="space-y-6">
