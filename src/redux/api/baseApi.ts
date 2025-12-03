@@ -5,5 +5,5 @@ export const baseApi = createApi({
     reducerPath: 'api',
     baseQuery: axiosBaseQuery(),
     endpoints: () => ({}),
-    tagTypes: ['instructor'],
+    tagTypes: ['instructor', 'course', 'batch'],
 });

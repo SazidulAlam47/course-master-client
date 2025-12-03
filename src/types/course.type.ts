@@ -43,3 +43,26 @@ export interface IInstructor {
     createdAt: string;
     updatedAt: string;
 }
+
+export interface ICourse {
+    _id: string;
+    title: string;
+    description: string;
+    instructor: string;
+    thumbnail?: string;
+    price: number;
+    category: string;
+    isPublished: boolean;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface IBatch {
+    _id: string;
+    courseId: string;
+    number: number;
+    startDate: Date;
+    endDate: Date;
+    createdAt: string;
+    updatedAt: string;
+}
