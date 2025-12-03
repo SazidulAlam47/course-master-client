@@ -1,7 +1,7 @@
 'use client';
 
 import { useGetAllInstructorsQuery } from '@/redux/api/instructorApi';
-import AddInstructor from './components/AddInstructor';
+import CreateInstructor from './components/CreateInstructor';
 import InstructorCard from './components/InstructorCard';
 import Loader from '@/components/shared/Loader';
 import EmptyPlaceholder from '@/components/shared/EmptyPlaceholder';
@@ -21,7 +21,7 @@ const InstructorsPage = () => {
                         Add, edit, and manage course instructors
                     </p>
                 </div>
-                <AddInstructor />
+                <CreateInstructor />
             </div>
 
             <div className="grid gap-4">

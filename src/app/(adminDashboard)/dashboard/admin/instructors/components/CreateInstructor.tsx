@@ -22,7 +22,12 @@ import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { toast } from 'sonner';
 
-const AddInstructor = () => {
+type CreateInstructorProps = {
+    hideIcon?: boolean;
+    className?: string;
+};
+
+const CreateInstructor = ({ hideIcon, className }: CreateInstructorProps) => {
     const [createInstructor] = useCreateInstructorMutation();
     const [open, setOpen] = useState(false);
 
@@ -48,8 +53,8 @@ const AddInstructor = () => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className="bg-[#1b7ad2] hover:bg-[#1565b8] text-white">
-                    <Plus className="w-4 h-4 mr-2" />
+                <Button type="button" className={className}>
+                    {!hideIcon && <Plus className="w-4 h-4 mr-2" />}
                     Add Instructor
                 </Button>
             </DialogTrigger>
@@ -89,4 +94,4 @@ const AddInstructor = () => {
     );
 };
 
-export default AddInstructor;
+export default CreateInstructor;

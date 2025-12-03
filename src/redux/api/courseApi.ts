@@ -1,16 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ICourse } from '@/types';
 import { baseApi } from './baseApi';
 
 const courseApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
-        getAllCourses: build.query<ICourse[], void>({
+        getAllCourses: build.query<ICourse[], any>({
             query: () => ({
                 url: '/courses',
                 method: 'GET',
             }),
             providesTags: ['course'],
         }),
-        getCourseById: build.query<ICourse, string>({
+        getCourseById: build.query<ICourse, any>({
             query: (id) => ({
                 url: `/courses/${id}`,
                 method: 'GET',

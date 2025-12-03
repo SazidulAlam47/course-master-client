@@ -18,7 +18,7 @@ const instructorApi = baseApi.injectEndpoints({
             }),
             providesTags: ['instructor'],
         }),
-        createInstructor: build.mutation<IInstructor, any>({
+        createInstructor: build.mutation<IInstructor, Partial<IInstructor>>({
             query: (data) => ({
                 url: '/instructors',
                 method: 'POST',
@@ -34,7 +34,7 @@ const instructorApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ['instructor'],
         }),
-        deleteInstructor: build.mutation<IInstructor, any>({
+        deleteInstructor: build.mutation<IInstructor, string>({
             query: (id: string) => ({
                 url: `/instructors/${id}`,
                 method: 'DELETE',

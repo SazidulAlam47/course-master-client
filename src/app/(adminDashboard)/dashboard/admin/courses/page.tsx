@@ -1,45 +1,17 @@
-import { Plus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+'use client';
+
+import { BookOpen } from 'lucide-react';
 import CourseCard from './components/CourseCard';
+import CreateCourse from './components/CreateCourse';
+import { useGetAllCoursesQuery } from '@/redux/api/courseApi';
+import Loader from '@/components/shared/Loader';
+import EmptyPlaceholder from '@/components/shared/EmptyPlaceholder';
 
-// Mock data - replace with actual API call
-const mockCourses = [
-    {
-        id: '1',
-        title: 'Complete Web Development Bootcamp',
-        description: 'Learn HTML, CSS, JavaScript, React, Node.js and more',
-        price: 4999,
-        instructor: 'John Doe',
-        duration: '12 weeks',
-        isPublished: true,
-        batches: [
-            { id: 'b1', name: 'Batch 1', startDate: '2025-01-01' },
-            { id: 'b2', name: 'Batch 2', startDate: '2025-02-15' },
-        ],
-    },
-    {
-        id: '2',
-        title: 'Advanced React Masterclass',
-        description: 'Master React with hooks, context, and advanced patterns',
-        price: 2999,
-        instructor: 'Jane Smith',
-        duration: '8 weeks',
-        isPublished: true,
-        batches: [{ id: 'b3', name: 'Batch 1', startDate: '2025-01-15' }],
-    },
-    {
-        id: '3',
-        title: 'Node.js Backend Development',
-        description: 'Build scalable backend applications with Node.js',
-        price: 3499,
-        instructor: 'Mike Johnson',
-        duration: '10 weeks',
-        isPublished: false,
-        batches: [],
-    },
-];
+const AdminCoursePage = () => {
+    const { data: courses, isLoading } = useGetAllCoursesQuery({});
 
-const AdminDashboardPage = () => {
+    console.log(courses);
+
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -51,19 +23,26 @@ const AdminDashboardPage = () => {
                         Create, update, and manage your courses and batches
                     </p>
                 </div>
-                <Button className="bg-[#1b7ad2] hover:bg-[#1565b8] text-white">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add Course
-                </Button>
+                <CreateCourse />
             </div>
 
             <div className="grid gap-4">
-                {mockCourses.map((course) => (
-                    <CourseCard key={course.id} course={course} />
-                ))}
+                {isLoading ? (
+                    <Loader />
+                ) : courses?.length ? (
+                    courses.map((course) => (
+                        <CourseCard key={course._id} course={course} />
+                    ))
+                ) : (
+                    <EmptyPlaceholder
+                        Icon={BookOpen}
+                        title="No Courses Yet"
+                        description="You haven't created any courses yet. Start by adding your first course."
+                    />
+                )}
             </div>
         </div>
     );
 };
 
-export default AdminDashboardPage;
+export default AdminCoursePage;

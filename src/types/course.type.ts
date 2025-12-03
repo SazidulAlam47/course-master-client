@@ -48,10 +48,10 @@ export interface ICourse {
     _id: string;
     title: string;
     description: string;
-    instructor: string;
+    instructorId: IInstructor;
     thumbnail?: string;
     price: number;
-    category: string;
+    categoryId: ICategory;
     isPublished: boolean;
     createdAt: string;
     updatedAt: string;
@@ -63,6 +63,13 @@ export interface IBatch {
     number: number;
     startDate: Date;
     endDate: Date;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface ICategory {
+    _id: string;
+    name: string;
     createdAt: string;
     updatedAt: string;
 }
