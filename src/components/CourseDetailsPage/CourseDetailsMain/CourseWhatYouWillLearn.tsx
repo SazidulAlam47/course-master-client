@@ -1,4 +1,4 @@
-import { TCourse } from '@/types/course.type';
+import { TCourse } from '@/types';
 import { FaCheck } from 'react-icons/fa6';
 
 type CourseWhatYouWillLearnProps = {

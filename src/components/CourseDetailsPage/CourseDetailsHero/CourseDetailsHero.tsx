@@ -1,5 +1,5 @@
 import Container from '../../Container';
-import { TCourse } from '@/types/course.type';
+import { TCourse } from '@/types';
 import CourseHeroLeft from './CourseHeroLeft';
 import CourseHeroRight from './CourseHeroRight';
 

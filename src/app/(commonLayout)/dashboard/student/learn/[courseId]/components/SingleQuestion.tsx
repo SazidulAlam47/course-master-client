@@ -2,7 +2,7 @@
 
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { QuizQuestion } from '@/types/course.type';
+import { QuizQuestion } from '@/types';
 
 type SingleQuestionProps = {
     question: QuizQuestion;

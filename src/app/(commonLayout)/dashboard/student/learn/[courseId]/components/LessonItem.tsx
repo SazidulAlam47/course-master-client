@@ -1,6 +1,6 @@
 'use client';
 
-import { Lesson } from '@/types/course.type';
+import { Lesson } from '@/types';
 import { FaCircleCheck, FaCirclePlay } from 'react-icons/fa6';
 import { MdOutlineAccessTime, MdAssignment, MdQuiz } from 'react-icons/md';
 

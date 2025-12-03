@@ -9,7 +9,7 @@ import {
 import { TbCurrencyTaka } from 'react-icons/tb';
 import Link from 'next/link';
 import { Button } from '../ui/button';
-import { TCourse } from '@/types/course.type';
+import { TCourse } from '@/types';
 
 type CourseCardProps = {
     course: Pick<

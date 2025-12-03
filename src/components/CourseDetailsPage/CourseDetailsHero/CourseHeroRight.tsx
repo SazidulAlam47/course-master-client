@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { TCourse } from '@/types/course.type';
+import { TCourse } from '@/types';
 import Image from 'next/image';
 import { TbCurrencyTaka } from 'react-icons/tb';
 

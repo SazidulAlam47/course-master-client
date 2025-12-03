@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { MdQuiz } from 'react-icons/md';
 import SingleQuestion from './SingleQuestion';
-import { QuizQuestion } from '@/types/course.type';
+import { QuizQuestion } from '@/types';
 import Swal from 'sweetalert2';
 
 type QuizContentProps = {

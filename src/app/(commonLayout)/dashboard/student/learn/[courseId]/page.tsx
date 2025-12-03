@@ -10,7 +10,7 @@ import NavigationButtons from './components/NavigationButtons';
 import AssignmentContent from './components/AssignmentContent';
 import QuizContent from './components/QuizContent';
 import { FaArrowLeft } from 'react-icons/fa6';
-import { Lesson } from '@/types/course.type';
+import { Lesson } from '@/types';
 
 const lessonsData: Lesson[] = [
     {

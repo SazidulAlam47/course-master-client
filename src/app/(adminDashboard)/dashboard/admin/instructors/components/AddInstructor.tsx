@@ -12,42 +12,41 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
+import { instructorDefaultValues } from '@/constants/instructor.constant';
+import { useCreateInstructorMutation } from '@/redux/api/instructorApi';
 import { instructorSchema } from '@/schemas/course.schema';
 import { uploadImageToCloudinary } from '@/services/actions/cloudinaryUpload';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus } from 'lucide-react';
+import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { toast } from 'sonner';
 
 const AddInstructor = () => {
+    const [createInstructor] = useCreateInstructorMutation();
+    const [open, setOpen] = useState(false);
+
     const handleSubmit = async (data: FieldValues) => {
-        console.log(data);
-        // const toastId = toast.loading('Creating instructor...');
-        // try {
-        //     // if image is selected, then upload the image
-        //     if (data?.file?.size) {
-        //         data.avatar = await uploadImageToCloudinary(data.file);
-        //     }
-        //     const res = await registerUser(data);
-        //     console.log(res);
-        //     if (res.success) {
-        //         toast.success('Account created successfully!', {
-        //             id: toastId,
-        //         });
-        //     } else {
-        //         toast.error(res.message || 'Something went wrong', {
-        //             id: toastId,
-        //         });
-        //     }
-        // } catch (error: any) {
-        //     toast.error(error.message || error.data || 'Something went wrong', {
-        //         id: toastId,
-        //     });
-        // }
+        const toastId = toast.loading('Creating instructor...');
+        try {
+            // if image is selected, then upload the image
+            if (data?.file?.size) {
+                data.avatar = await uploadImageToCloudinary(data.file);
+            }
+            await createInstructor(data).unwrap();
+            toast.success('Instructor created successfully!', {
+                id: toastId,
+            });
+            setOpen(false);
+        } catch (error: any) {
+            toast.error(error.message || error.data || 'Something went wrong', {
+                id: toastId,
+            });
+        }
     };
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button className="bg-[#1b7ad2] hover:bg-[#1565b8] text-white">
                     <Plus className="w-4 h-4 mr-2" />
@@ -60,6 +59,7 @@ const AddInstructor = () => {
                 </DialogHeader>
                 <LForm
                     onSubmit={handleSubmit}
+                    defaultValues={instructorDefaultValues}
                     resolver={zodResolver(instructorSchema)}
                 >
                     <div className="space-y-4">

@@ -33,3 +33,13 @@ export type Lesson = {
     task?: string;
     questions?: QuizQuestion[];
 };
+
+export interface IInstructor {
+    _id: string;
+    name: string;
+    avatar?: string;
+    title: string;
+    bio: string;
+    createdAt: string;
+    updatedAt: string;
+}

@@ -2,7 +2,7 @@
 
 import { Progress } from '@/components/ui/progress';
 import LessonItem from './LessonItem';
-import { Lesson } from '@/types/course.type';
+import { Lesson } from '@/types';
 
 type LessonSidebarProps = {
     lessons: Lesson[];

@@ -1,4 +1,4 @@
-import { TCourse } from '@/types/course.type';
+import { TCourse } from '@/types';
 
 type CourseHeroLeftProps = {
     course: TCourse;
