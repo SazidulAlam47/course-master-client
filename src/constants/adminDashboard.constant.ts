@@ -1,4 +1,10 @@
-import { BookOpen, Users, FileCheck, LayoutDashboard } from 'lucide-react';
+import {
+    BookOpen,
+    Users,
+    FileCheck,
+    LayoutDashboard,
+    UsersRound,
+} from 'lucide-react';
 
 export const adminSidebarItems = [
     {
@@ -12,9 +18,14 @@ export const adminSidebarItems = [
         icon: BookOpen,
     },
     {
+        title: 'Instructor Management',
+        url: '/dashboard/admin/instructors',
+        icon: Users,
+    },
+    {
         title: 'Enrollment Management',
         url: '/dashboard/admin/enrollments',
-        icon: Users,
+        icon: UsersRound,
     },
     {
         title: 'Assignment Review',
