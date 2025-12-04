@@ -1,7 +1,5 @@
 import { IInstructor } from '@/types';
 import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar';
-import Link from 'next/link';
-import { FaChevronRight } from 'react-icons/fa6';
 
 type CourseInstructorProps = {
     instructor: IInstructor;
@@ -23,13 +21,9 @@ const CourseInstructor = ({ instructor }: CourseInstructorProps) => (
                 </AvatarFallback>
             </Avatar>
             <div>
-                <Link
-                    href="#"
-                    className="text-xl font-semibold text-gray-900 hover:text-[#1b7ad2] flex items-center gap-1"
-                >
+                <h2 className="text-xl font-semibold flex items-center gap-1">
                     {instructor.name}
-                    <FaChevronRight className="text-sm" />
-                </Link>
+                </h2>
                 <p className="text-gray-600 mt-1">{instructor.title}</p>
                 <p className="text-gray-500 text-sm mt-1">{instructor.bio}</p>
             </div>

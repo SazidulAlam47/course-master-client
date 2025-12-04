@@ -18,7 +18,7 @@ const CourseEnrollButton = ({ course }: CourseEnrollButtonProps) => {
             return router.push('/login');
         }
 
-        console.log('we are here');
+        console.log(course._id);
     };
 
     return (
