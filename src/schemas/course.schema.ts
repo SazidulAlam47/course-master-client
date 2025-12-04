@@ -1,3 +1,4 @@
+import { LessonTypes } from '@/constants/course.constant';
 import z from 'zod';
 
 export const instructorSchema = z.object({
@@ -27,4 +28,21 @@ export const courseSchema = z.object({
 
 export const categorySchema = z.object({
     name: z.string().min(1, 'Please enter category name'),
+});
+
+export const createLessonSchema = z.object({
+    title: z.string().min(1, 'Please enter lesson title'),
+    type: z.enum(LessonTypes, {
+        message: 'Please select a lesson type',
+    }),
+    duration: z.string().min(1, 'Please enter duration'),
+    videoId: z.string().optional(),
+    assignmentTask: z.string().optional(),
+});
+
+export const updateLessonSchema = z.object({
+    title: z.string().min(1, 'Please enter lesson title'),
+    duration: z.string().min(1, 'Please enter duration'),
+    videoId: z.string().optional(),
+    assignmentTask: z.string().optional(),
 });

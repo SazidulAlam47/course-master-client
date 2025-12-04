@@ -9,3 +9,13 @@ export const courseDefaultValues = {
 export const categoryDefaultValues = {
     name: '',
 };
+
+export const createLessonDefaultValues = {
+    title: '',
+    type: '',
+    duration: '',
+    videoId: '',
+    assignmentTask: '',
+};
+
+export const LessonTypes = ['video', 'assignment', 'quiz'];

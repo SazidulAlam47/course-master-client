@@ -69,9 +69,7 @@ const UpdateCourse = ({ course }: UpdateCourseProps) => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="outline" size="sm">
-                    Edit
-                </Button>
+                <Button variant="outline">Edit Course</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[600px]">
                 <DialogHeader>

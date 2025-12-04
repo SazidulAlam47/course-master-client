@@ -7,10 +7,11 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ICourse } from '@/types';
-import UpdateCourse from './UpdateCourse';
 import DeleteCourse from './DeleteCourse';
 import PublishUnpublishCourse from './PublishUnpublishCourse';
 import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 type CourseCardProps = {
     course: ICourse;
@@ -66,8 +67,15 @@ const CourseCard = ({ course }: CourseCardProps) => {
 
                 <div className="flex items-center justify-between">
                     <div className="flex gap-2">
-                        <PublishUnpublishCourse course={course} />
-                        <UpdateCourse course={course} />
+                        <Link href={`/dashboard/admin/courses/${course._id}`}>
+                            <Button variant="outline" size="sm">
+                                View Lessons
+                            </Button>
+                        </Link>
+                        <PublishUnpublishCourse
+                            course={course}
+                            buttonSize="sm"
+                        />
                         <DeleteCourse course={course} />
                     </div>
                 </div>

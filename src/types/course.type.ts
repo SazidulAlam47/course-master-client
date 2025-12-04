@@ -1,38 +1,24 @@
-export type TCourse = {
-    id: string;
-    title: string;
-    description: string;
-    price: number;
-    thumbnail: string;
-    instructor: {
-        name: string;
-        avatar: string;
-        title: string;
-        bio: string;
-    };
-    whatYouWillLearn: string[];
-    syllabus: {
-        title: string;
-        duration: string;
-    }[];
-};
+export type TLessonType = 'video' | 'assignment' | 'quiz';
 
-export type LessonType = 'video' | 'assignment' | 'quiz';
-
-export type QuizQuestion = {
+export interface IQuizQuestion {
     question: string;
     options: string[];
     correctAnswer: number;
-};
+}
 
-export type Lesson = {
+export interface ILesson {
+    _id: string;
+    courseId: string;
     title: string;
+    type: TLessonType;
     duration: string;
-    type: LessonType;
+    order: number;
     videoId?: string;
-    task?: string;
-    questions?: QuizQuestion[];
-};
+    assignmentTask?: string;
+    quizQuestions?: IQuizQuestion[];
+    createdAt: string;
+    updatedAt: string;
+}
 
 export interface IInstructor {
     _id: string;
@@ -53,6 +39,7 @@ export interface ICourse {
     price: number;
     categoryId: ICategory;
     isPublished: boolean;
+    lessons: ILesson[];
     createdAt: string;
     updatedAt: string;
 }

@@ -3,6 +3,7 @@ import { Play } from 'lucide-react';
 import Container from '../Container';
 import Image from 'next/image';
 import heroImage from '@/assets/hero.png';
+import Link from 'next/link';
 
 const HeroSection = () => {
     return (
@@ -20,15 +21,9 @@ const HeroSection = () => {
                             sequentially.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                            <Button size="lg">Browse Courses</Button>
-                            <Button
-                                size="lg"
-                                variant="outline"
-                                className="border-[#1b7ad2] text-[#1b7ad2] hover:bg-[#1b7ad2] hover:text-white bg-transparent"
-                            >
-                                <Play className="w-4 h-4 mr-2" />
-                                Watch Demo
-                            </Button>
+                            <Link href="/courses">
+                                <Button size="lg">Browse Courses</Button>{' '}
+                            </Link>
                         </div>
                     </div>
                     <div>

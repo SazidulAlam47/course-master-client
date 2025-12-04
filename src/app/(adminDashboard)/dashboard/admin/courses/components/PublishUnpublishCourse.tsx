@@ -18,9 +18,13 @@ import { toast } from 'sonner';
 
 type PublishUnpublishCourseProps = {
     course: ICourse;
+    buttonSize?: 'sm' | 'lg' | 'default';
 };
 
-const PublishUnpublishCourse = ({ course }: PublishUnpublishCourseProps) => {
+const PublishUnpublishCourse = ({
+    course,
+    buttonSize = 'default',
+}: PublishUnpublishCourseProps) => {
     const [updateCourse] = useUpdateCourseMutation();
     const [open, setOpen] = useState(false);
 
@@ -49,14 +53,14 @@ const PublishUnpublishCourse = ({ course }: PublishUnpublishCourseProps) => {
             <DialogTrigger asChild>
                 <Button
                     variant="outline"
-                    size="sm"
+                    size={buttonSize}
                     className={
                         isPublished
                             ? 'text-orange-600 hover:text-orange-700 hover:bg-orange-50'
                             : 'text-green-600 hover:text-green-700 hover:bg-green-50'
                     }
                 >
-                    {action}
+                    {action} Course
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
