@@ -6,7 +6,7 @@ import { steps } from '@/constants/homepage.constant';
 const HowItWorks = () => {
     return (
         <>
-            <section className="py-20">
+            <section className="py-20 bg-gray-50">
                 <Container>
                     <SectionHeading
                         title="How It Works"

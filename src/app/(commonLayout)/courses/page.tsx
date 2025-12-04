@@ -1,19 +1,17 @@
 import Container from '@/components/Container';
 import SectionHeading from '@/components/SectionHeading';
 import CourseCard from '@/components/shared/CourseCard';
+import { ICourse } from '@/types';
 
-const CoursesPage = () => {
-    const courses = [
+const CoursesPage = async () => {
+    const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/courses`,
         {
-            id: 'asdfasdfasdf',
-            title: 'Complete Web Development Bootcamp',
-            description:
-                'Learn HTML, CSS, JavaScript, React, and Node.js from scratch',
-            price: 1200,
-            thumbnail:
-                'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/online-education-youtube-thumbnail-design-template-81860c5e2c826288e86665f75958fc82_screen.jpg',
-        },
-    ];
+            next: { revalidate: 60 },
+        }
+    );
+    const data = await res.json();
+    const courses: ICourse[] = data.data;
 
     return (
         <>

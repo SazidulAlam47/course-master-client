@@ -1,11 +1,11 @@
-import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { TCourse } from '@/types';
+import { ICourse } from '@/types';
 import Image from 'next/image';
 import { TbCurrencyTaka } from 'react-icons/tb';
+import CourseEnrollButton from './CourseEnrollButton';
 
 type CourseHeroRightProps = {
-    course: TCourse;
+    course: ICourse;
 };
 
 const CourseHeroRight = ({ course }: CourseHeroRightProps) => {
@@ -27,10 +27,7 @@ const CourseHeroRight = ({ course }: CourseHeroRightProps) => {
                         <TbCurrencyTaka className="text-3xl" />
                         {course.price}
                     </div>
-
-                    <Button className="w-full bg-green-500 hover:bg-green-600 text-white text-lg py-6">
-                        Enroll Now
-                    </Button>
+                    <CourseEnrollButton course={course} />
                 </CardContent>
             </Card>
         </div>

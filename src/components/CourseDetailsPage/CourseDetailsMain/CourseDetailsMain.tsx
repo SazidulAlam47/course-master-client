@@ -1,12 +1,10 @@
-import { TCourse } from '@/types';
+import { ICourse } from '@/types';
 import Container from '../../Container';
 import CourseInstructor from './CourseInstructor';
-import CourseWhatYouWillLearn from './CourseWhatYouWillLearn';
 import CourseSyllabus from './CourseSyllabus';
-import CourseDescription from './CourseDescription';
 
 type CourseDetailsMainProps = {
-    course: TCourse;
+    course: ICourse;
 };
 
 const CourseDetailsMain = ({ course }: CourseDetailsMainProps) => {
@@ -14,10 +12,8 @@ const CourseDetailsMain = ({ course }: CourseDetailsMainProps) => {
         <Container>
             <div className="py-12 grid lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-12">
-                    <CourseInstructor instructor={course.instructor} />
-                    <CourseWhatYouWillLearn items={course.whatYouWillLearn} />
-                    <CourseSyllabus syllabus={course.syllabus} />
-                    <CourseDescription description={course.description} />
+                    <CourseInstructor instructor={course.instructorId} />
+                    <CourseSyllabus syllabus={course.lessons} />
                 </div>
                 <div className="hidden lg:block"></div>
             </div>

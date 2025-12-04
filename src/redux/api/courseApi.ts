@@ -6,7 +6,7 @@ const courseApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
         getAllCourses: build.query<ICourse[], any>({
             query: () => ({
-                url: '/courses',
+                url: '/courses/admin',
                 method: 'GET',
             }),
             providesTags: ['course'],

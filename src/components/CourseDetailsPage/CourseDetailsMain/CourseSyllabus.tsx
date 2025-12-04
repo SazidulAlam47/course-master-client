@@ -1,8 +1,8 @@
-import { TCourse } from '@/types';
+import { ILesson } from '@/types';
 import CourseSyllabusCard from './CourseSyllabusCard';
 
 type CourseSyllabusProps = {
-    syllabus: TCourse['syllabus'];
+    syllabus: ILesson[];
 };
 
 const CourseSyllabus = ({ syllabus }: CourseSyllabusProps) => (

@@ -1,10 +1,10 @@
 import Container from '../../Container';
-import { TCourse } from '@/types';
+import { ICourse } from '@/types';
 import CourseHeroLeft from './CourseHeroLeft';
 import CourseHeroRight from './CourseHeroRight';
 
 type CourseDetailsHeroProps = {
-    course: TCourse;
+    course: ICourse;
 };
 
 const CourseDetailsHero = ({ course }: CourseDetailsHeroProps) => {

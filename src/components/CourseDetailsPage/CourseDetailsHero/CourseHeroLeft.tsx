@@ -1,7 +1,7 @@
-import { TCourse } from '@/types';
+import { ICourse } from '@/types';
 
 type CourseHeroLeftProps = {
-    course: TCourse;
+    course: ICourse;
 };
 
 const CourseHeroLeft = ({ course }: CourseHeroLeftProps) => {

@@ -6,7 +6,7 @@ import FeaturesSectionVideo from './FeaturesSectionVideo';
 const FeaturesSection = () => {
     return (
         <>
-            <section className="py-20 bg-gray-50">
+            <section className="py-20">
                 <Container>
                     <div className="grid lg:grid-cols-2 gap-12 items-center">
                         <div>
@@ -19,7 +19,7 @@ const FeaturesSection = () => {
                                         key={index}
                                         className="flex items-center space-x-3"
                                     >
-                                        <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center shrink-0">
                                             <Check className="w-4 h-4 text-white" />
                                         </div>
                                         <span className="text-gray-700">

@@ -7,7 +7,6 @@ interface CourseSyllabusCardProps {
 const CourseSyllabusCard = ({
     index,
     title,
-
     duration,
 }: CourseSyllabusCardProps) => (
     <div className="hover:shadow-md transition-shadow bg-white rounded-lg">

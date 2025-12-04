@@ -1,10 +1,10 @@
-import { TCourse } from '@/types';
+import { IInstructor } from '@/types';
 import { Avatar, AvatarFallback, AvatarImage } from '../../ui/avatar';
 import Link from 'next/link';
 import { FaChevronRight } from 'react-icons/fa6';
 
 type CourseInstructorProps = {
-    instructor: TCourse['instructor'];
+    instructor: IInstructor;
 };
 
 const CourseInstructor = ({ instructor }: CourseInstructorProps) => (

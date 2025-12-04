@@ -8,7 +8,7 @@ import Image from 'next/image';
 const Testimonials = () => {
     return (
         <>
-            <section className="py-20">
+            <section className="py-20 bg-gray-50">
                 <Container>
                     <SectionHeading title="What Our Students Say" />
                     <div className="grid md:grid-cols-3 gap-8">

@@ -9,16 +9,18 @@ import {
 import { TbCurrencyTaka } from 'react-icons/tb';
 import Link from 'next/link';
 import { Button } from '../ui/button';
-import { TCourse } from '@/types';
+import { ICourse } from '@/types';
 
 type CourseCardProps = {
-    course: Pick<
-        TCourse,
-        'title' | 'thumbnail' | 'id' | 'description' | 'price'
-    >;
+    course: ICourse;
 };
 
 const CourseCard = ({ course }: CourseCardProps) => {
+    const truncatedDescription =
+        course.description.length > 100
+            ? course.description.substring(0, 100) + '...'
+            : course.description;
+
     return (
         <Card className="rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-200 group py-0 gap-0 overflow-hidden">
             <CardHeader className="p-0">
@@ -37,14 +39,14 @@ const CourseCard = ({ course }: CourseCardProps) => {
                     {course.title}
                 </CardTitle>
                 <CardDescription className="text-gray-600 mb-4 leading-relaxed">
-                    {course.description}
+                    {truncatedDescription}
                 </CardDescription>
                 <div className="flex items-center justify-between">
                     <span className="text-2xl font-bold text-[#1b7ad2] flex items-center">
                         <TbCurrencyTaka />
                         {course.price}
                     </span>
-                    <Link href={`/courses/${course.id}`}>
+                    <Link href={`/courses/${course._id}`}>
                         <Button
                             variant="outline"
                             className="border-[#1b7ad2] text-[#1b7ad2] hover:bg-[#1b7ad2] hover:text-white bg-transparent"
