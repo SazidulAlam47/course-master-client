@@ -1,5 +1,3 @@
-import { BookOpen } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import {
     Card,
     CardContent,
@@ -11,6 +9,8 @@ import { Badge } from '@/components/ui/badge';
 import { ICourse } from '@/types';
 import UpdateCourse from './UpdateCourse';
 import DeleteCourse from './DeleteCourse';
+import PublishUnpublishCourse from './PublishUnpublishCourse';
+import Image from 'next/image';
 
 type CourseCardProps = {
     course: ICourse;
@@ -22,9 +22,13 @@ const CourseCard = ({ course }: CourseCardProps) => {
             <CardHeader className="pb-3">
                 <div className="flex gap-2.5 justify-between items-center">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-[#1b7ad2]/10 rounded-lg flex items-center justify-center">
-                            <BookOpen className="w-5 h-5 text-[#1b7ad2]" />
-                        </div>
+                        <Image
+                            src={course.thumbnail!}
+                            alt={course.title}
+                            width={64}
+                            height={64}
+                            className="w-16 h-16 rounded-lg object-cover"
+                        />
                         <div>
                             <CardTitle className="text-lg">
                                 {course.title}
@@ -62,6 +66,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
 
                 <div className="flex items-center justify-between">
                     <div className="flex gap-2">
+                        <PublishUnpublishCourse course={course} />
                         <UpdateCourse course={course} />
                         <DeleteCourse course={course} />
                     </div>

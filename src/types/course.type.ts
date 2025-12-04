@@ -49,7 +49,7 @@ export interface ICourse {
     title: string;
     description: string;
     instructorId: IInstructor;
-    thumbnail?: string;
+    thumbnail: string;
     price: number;
     categoryId: ICategory;
     isPublished: boolean;
