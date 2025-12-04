@@ -19,3 +19,6 @@ export const createLessonDefaultValues = {
 };
 
 export const LessonTypes = ['video', 'assignment', 'quiz'];
+
+
+export const PaymentStatus = ['paid', 'unpaid'] as const;

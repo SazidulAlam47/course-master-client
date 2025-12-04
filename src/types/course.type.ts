@@ -1,3 +1,5 @@
+import { PaymentStatus } from '@/constants/course.constant';
+
 export type TLessonType = 'video' | 'assignment' | 'quiz';
 
 export interface IQuizQuestion {
@@ -57,6 +59,18 @@ export interface IBatch {
 export interface ICategory {
     _id: string;
     name: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export type TPaymentStatus = (typeof PaymentStatus)[number];
+
+export interface IEnrollment {
+    _id: string;
+    studentId: string;
+    courseId: string;
+    paymentStatus: TPaymentStatus;
+    completedLessonIndex: number;
     createdAt: string;
     updatedAt: string;
 }

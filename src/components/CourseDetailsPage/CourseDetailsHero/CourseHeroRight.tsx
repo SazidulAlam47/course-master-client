@@ -16,9 +16,9 @@ const CourseHeroRight = ({ course }: CourseHeroRightProps) => {
                     <Image
                         src={course.thumbnail}
                         alt={course.title}
-                        height={190}
-                        width={190}
-                        className="w-full h-48 bg-gray-500"
+                        height={300}
+                        width={300}
+                        className="w-full h-56 bg-gray-500 object-cover"
                     />
                 </div>
 
