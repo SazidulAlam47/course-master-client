@@ -5,14 +5,17 @@ import { FieldValues } from 'react-hook-form';
 import getSessionToken from './getSessionToken';
 
 export const registerUser = async (user: TUser) => {
-    const res = await fetch(`${process.env.BACKEND_API_URL}/auth/register`, {
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json',
-        },
-        body: JSON.stringify(user),
-        cache: 'no-store',
-    });
+    const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/auth/register`,
+        {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify(user),
+            cache: 'no-store',
+        }
+    );
 
     const data = await res.json();
     return data;
@@ -22,7 +25,7 @@ export const changePassword = async (values: FieldValues) => {
     const sessionToken = await getSessionToken();
 
     const res = await fetch(
-        `${process.env.BACKEND_API_URL}/auth/change-password`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/auth/change-password`,
         {
             method: 'POST',
             headers: {
@@ -42,7 +45,7 @@ export const setPassword = async (values: FieldValues) => {
     const sessionToken = await getSessionToken();
 
     const res = await fetch(
-        `${process.env.BACKEND_API_URL}/auth/set-password`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/auth/set-password`,
         {
             method: 'POST',
             headers: {

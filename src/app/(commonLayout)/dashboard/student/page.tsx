@@ -4,23 +4,15 @@ import { getServerSession } from 'next-auth';
 import EnrolledCourseCard from './components/EnrolledCourseCard';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { getMyEnrollments } from '@/services/actions/courseActions';
 
-// Mock enrolled courses data - replace with actual API call
-const enrolledCourses = [
-    {
-        id: '1',
-        title: 'Complete Web Development Course With Programming Hero',
-        instructor: 'ঝংকার মাহবুব',
-        thumbnail:
-            'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/online-education-youtube-thumbnail-design-template-81860c5e2c826288e86665f75958fc82_screen.jpg',
-        progress: 40,
-        batch: 10,
-    },
-];
+
 
 const StudentDashboardPage = async () => {
     const session = await getServerSession(authOptions);
     const userName = session?.user?.name || 'Student';
+
+    const enrollments = await getMyEnrollments();
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -38,12 +30,12 @@ const StudentDashboardPage = async () => {
                         Enrolled Courses
                     </h2>
 
-                    {enrolledCourses.length ? (
+                    {enrollments.length ? (
                         <div className="space-y-4">
-                            {enrolledCourses.map((course) => (
+                            {enrollments.map((enrollment) => (
                                 <EnrolledCourseCard
-                                    key={course.id}
-                                    course={course}
+                                    key={enrollment._id}
+                                    enrollment={enrollment}
                                 />
                             ))}
                         </div>

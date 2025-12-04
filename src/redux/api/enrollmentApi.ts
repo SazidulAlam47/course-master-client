@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IEnrollment } from '@/types';
+import {
+    IEnrollment,
+    IInitPaymentResponse,
+    IUpdateEnrollmentPayload,
+} from '@/types';
 import { baseApi } from './baseApi';
 
 const enrollmentApi = baseApi.injectEndpoints({
@@ -19,9 +23,16 @@ const enrollmentApi = baseApi.injectEndpoints({
             }),
             providesTags: ['enrollment'],
         }),
+        getMyEnrollments: build.query<IEnrollment[], any>({
+            query: () => ({
+                url: '/enrollments/my-enrollments',
+                method: 'GET',
+            }),
+            providesTags: ['enrollment'],
+        }),
         updateEnrollment: build.mutation<
             IEnrollment,
-            { id: string; data: { completedLessonIndex: number } }
+            { id: string; data: IUpdateEnrollmentPayload }
         >({
             query: (args) => ({
                 url: `/enrollments/${args.id}`,
@@ -30,7 +41,7 @@ const enrollmentApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ['enrollment'],
         }),
-        initPayment: build.mutation<{ paymentUrl: string }, any>({
+        initPayment: build.mutation<IInitPaymentResponse, any>({
             query: (data) => ({
                 url: '/payment/init-payment',
                 method: 'POST',
@@ -44,6 +55,7 @@ const enrollmentApi = baseApi.injectEndpoints({
 export const {
     useCreateEnrollmentMutation,
     useGetEnrollmentByIdQuery,
+    useGetMyEnrollmentsQuery,
     useUpdateEnrollmentMutation,
     useInitPaymentMutation,
 } = enrollmentApi;

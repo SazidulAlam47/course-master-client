@@ -1,17 +1,10 @@
 import Container from '@/components/Container';
 import SectionHeading from '@/components/SectionHeading';
 import CourseCard from '@/components/shared/CourseCard';
-import { ICourse } from '@/types';
+import { getAllCourses } from '@/services/actions/courseActions';
 
 const CoursesPage = async () => {
-    const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/courses`,
-        {
-            next: { revalidate: 60 },
-        }
-    );
-    const data = await res.json();
-    const courses: ICourse[] = data.data;
+    const courses = await getAllCourses();
 
     return (
         <>

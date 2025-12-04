@@ -1,6 +1,6 @@
 import CourseDetailsHero from '@/components/CourseDetailsPage/CourseDetailsHero/CourseDetailsHero';
 import CourseDetailsMain from '@/components/CourseDetailsPage/CourseDetailsMain/CourseDetailsMain';
-import { ICourse } from '@/types';
+import { getCourseById } from '@/services/actions/courseActions';
 
 type CourseDetailsPageProps = {
     params: Promise<{ id: string }>;
@@ -9,14 +9,7 @@ type CourseDetailsPageProps = {
 const CourseDetailsPage = async ({ params }: CourseDetailsPageProps) => {
     const { id } = await params;
 
-    const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/courses/${id}/public`,
-        {
-            cache: 'no-store',
-        }
-    );
-    const data = await res.json();
-    const course: ICourse = data.data;
+    const course = await getCourseById(id);
 
     return (
         <div className="min-h-screen bg-gray-50">
