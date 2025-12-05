@@ -10,7 +10,7 @@ type LessonSidebarProps = {
     completedLessonsOrder: number;
     totalLessons: number;
     // eslint-disable-next-line no-unused-vars
-    onLessonSelect: (number) => void;
+    onLessonSelect: (arg0: number) => void;
 };
 
 const LessonSidebar = ({

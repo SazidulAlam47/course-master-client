@@ -2,14 +2,14 @@
 
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { QuizQuestion } from '@/types';
+import { IQuizQuestion } from '@/types';
 
 type SingleQuestionProps = {
-    question: QuizQuestion;
+    question: IQuizQuestion;
     questionIndex: number;
     selectedValue: string | undefined;
     // eslint-disable-next-line no-unused-vars
-    onSelectAnswer: (number, string) => void;
+    onSelectAnswer: (arg0: number, arg1: string) => void;
     isSubmitted: boolean;
 };
 

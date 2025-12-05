@@ -1,7 +1,6 @@
 import { FileCheck } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import {
     Card,
     CardContent,
@@ -11,6 +10,7 @@ import {
 } from '@/components/ui/card';
 import getInitials from '@/utils/getInitials';
 import { IAssignment } from '@/types';
+import GiveUpdateFeedback from './GiveUpdateFeedback';
 
 type AssignmentCardProps = {
     assignment: IAssignment;
@@ -102,12 +102,7 @@ const AssignmentCard = ({ assignment }: AssignmentCardProps) => {
                     </div>
                 )}
 
-                <div>
-                    <Button size="sm">
-                        {assignmentStatus === 'pending' ? 'Give' : 'Update'}{' '}
-                        Feedback
-                    </Button>
-                </div>
+                <GiveUpdateFeedback assignment={assignment} />
             </CardContent>
         </Card>
     );

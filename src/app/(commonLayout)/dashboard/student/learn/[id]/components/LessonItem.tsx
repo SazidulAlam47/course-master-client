@@ -1,11 +1,11 @@
 'use client';
 
-import { Lesson } from '@/types';
+import { ILesson } from '@/types';
 import { FaCircleCheck, FaCirclePlay } from 'react-icons/fa6';
 import { MdOutlineAccessTime, MdAssignment, MdQuiz } from 'react-icons/md';
 
 type LessonItemProps = {
-    lesson: Lesson;
+    lesson: ILesson;
     index: number;
     isActive: boolean;
     isCompleted: boolean;

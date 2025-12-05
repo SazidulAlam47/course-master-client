@@ -30,10 +30,10 @@ const AdminSidebar = () => {
     const handleLogout = async () => {
         const toastId = toast.loading('Logging out...');
         try {
-            const res = await signOut({
+            await signOut({
                 redirect: false,
             });
-            router.push(res.url);
+            router.push('/login');
             toast.success('Logged out successfully!', { id: toastId });
         } catch (error: any) {
             toast.error(error.message || error.data || 'Something went wrong', {
