@@ -26,52 +26,57 @@ const LearnPage = () => {
     const [updateEnrollmentCompletedOrder] =
         useUpdateEnrollmentCompletedOrderMutation();
 
-    const [currentLessonIndex, setCurrentLessonIndex] = useState<number>(
+    const [currentLessonOrder, setCurrentLessonOrder] = useState<number>(
         enrollment?.completedLessonOrder || 0
     );
 
-    const [isNavigatedToCompletedIndex, setIsNavigatedToCompletedIndex] =
+    const [isNavigatedToCompletedOrder, setIsNavigatedToCompletedOrder] =
         useState(false);
 
     useEffect(() => {
         if (
-            !isNavigatedToCompletedIndex &&
+            !isNavigatedToCompletedOrder &&
             enrollment?.completedLessonOrder !== undefined
         ) {
-            setCurrentLessonIndex(enrollment.completedLessonOrder);
-            setIsNavigatedToCompletedIndex(true);
+            setCurrentLessonOrder(enrollment.completedLessonOrder);
+            setIsNavigatedToCompletedOrder(true);
         }
-    }, [enrollment?.completedLessonOrder, isNavigatedToCompletedIndex]);
+    }, [enrollment?.completedLessonOrder, isNavigatedToCompletedOrder]);
 
     const { data: currentLesson } = useGetLessonByOrderQuery(
-        currentLessonIndex + 1
+        currentLessonOrder + 1
     );
 
     const allLessons = enrollment?.lessons || [];
-    const completedLessonsIndex = enrollment?.completedLessonOrder || 0;
-
+    const completedLessonsOrder = enrollment?.completedLessonOrder || 0;
     const totalLessons = allLessons.length;
 
+    useEffect(() => {
+        if (totalLessons === completedLessonsOrder) {
+            setCurrentLessonOrder(totalLessons - 1);
+        }
+    }, []);
+
     const handleLessonSelect = (index: number) => {
-        setCurrentLessonIndex(index);
+        setCurrentLessonOrder(index);
     };
 
     const handlePrevious = () => {
-        setCurrentLessonIndex(currentLessonIndex - 1);
+        setCurrentLessonOrder(currentLessonOrder - 1);
     };
 
     const handleNext = () => {
-        setCurrentLessonIndex(currentLessonIndex + 1);
+        setCurrentLessonOrder(currentLessonOrder + 1);
     };
 
     const handleMarkComplete = async () => {
         const toastId = toast.loading('Marking lesson as complete...');
         try {
-            const newCompletedIndex = completedLessonsIndex + 1;
+            const newCompletedIndex = completedLessonsOrder + 1;
             await updateEnrollmentCompletedOrder(id).unwrap();
             toast.success('Lesson marked as complete!', { id: toastId });
             if (newCompletedIndex < allLessons.length) {
-                setCurrentLessonIndex(newCompletedIndex);
+                setCurrentLessonOrder(newCompletedIndex);
             }
         } catch (error: any) {
             toast.error('Failed to update lesson progress. Please try again.', {
@@ -81,17 +86,17 @@ const LearnPage = () => {
         }
     };
 
-    const isCurrentCompleted = currentLessonIndex < completedLessonsIndex;
-    const hasPrevious = currentLessonIndex > 0;
-    const hasNext = currentLessonIndex < allLessons.length - 1;
+    const isCurrentCompleted = currentLessonOrder < completedLessonsOrder;
+    const hasPrevious = currentLessonOrder > 0;
+    const hasNext = currentLessonOrder < allLessons.length - 1;
 
     const canMarkComplete = useMemo(() => {
         if (!currentLesson) return false;
-        if (currentLessonIndex !== completedLessonsIndex) return false;
+        if (currentLessonOrder !== completedLessonsOrder) return false;
         return currentLesson.type === 'video';
-    }, [currentLesson, currentLessonIndex, completedLessonsIndex]);
+    }, [currentLesson, currentLessonOrder, completedLessonsOrder]);
 
-    const canGoNext = currentLessonIndex < completedLessonsIndex;
+    const canGoNext = currentLessonOrder < completedLessonsOrder;
 
     const renderContent = () => {
         if (!currentLesson) return null;
@@ -100,6 +105,7 @@ const LearnPage = () => {
             case 'assignment':
                 return (
                     <AssignmentContent
+                        lessonId={currentLesson._id}
                         title={currentLesson.title}
                         task={currentLesson.assignmentTask || ''}
                         isCompleted={isCurrentCompleted}
@@ -118,7 +124,7 @@ const LearnPage = () => {
                 return (
                     <VideoPlayer
                         videoId={currentLesson.videoId || ''}
-                        title={`${currentLessonIndex + 1}. ${
+                        title={`${currentLessonOrder + 1}. ${
                             currentLesson.title
                         }`}
                     />
@@ -162,8 +168,8 @@ const LearnPage = () => {
                     <div className="lg:col-span-1">
                         <LessonSidebar
                             lessons={allLessons}
-                            currentLessonIndex={currentLessonIndex}
-                            completedLessonsIndex={completedLessonsIndex}
+                            currentLessonOrder={currentLessonOrder}
+                            completedLessonsOrder={completedLessonsOrder}
                             totalLessons={totalLessons}
                             onLessonSelect={handleLessonSelect}
                         />

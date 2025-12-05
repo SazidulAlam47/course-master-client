@@ -1,4 +1,5 @@
 export interface IQuizAttempt {
+    _id: string;
     studentId: string;
     courseId: string;
     lessonId: string;
@@ -6,4 +7,6 @@ export interface IQuizAttempt {
     submittedAnswers: number[];
     score: number;
     totalQuestions: number;
+    createdAt: string;
+    updatedAt: string;
 }

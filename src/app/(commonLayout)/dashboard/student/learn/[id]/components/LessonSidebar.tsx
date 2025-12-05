@@ -2,25 +2,25 @@
 
 import { Progress } from '@/components/ui/progress';
 import LessonItem from './LessonItem';
-import { Lesson } from '@/types';
+import { ILesson } from '@/types';
 
 type LessonSidebarProps = {
-    lessons: Lesson[];
-    currentLessonIndex: number;
-    completedLessonsIndex: number;
+    lessons: ILesson[];
+    currentLessonOrder: number;
+    completedLessonsOrder: number;
     totalLessons: number;
     onLessonSelect: (index: number) => void;
 };
 
 const LessonSidebar = ({
     lessons,
-    currentLessonIndex,
-    completedLessonsIndex,
+    currentLessonOrder,
+    completedLessonsOrder,
     totalLessons,
     onLessonSelect,
 }: LessonSidebarProps) => {
     const progressPercentage = Math.round(
-        (completedLessonsIndex / totalLessons) * 100
+        (completedLessonsOrder / totalLessons) * 100
     );
 
     return (
@@ -29,18 +29,18 @@ const LessonSidebar = ({
                 <h3 className="font-semibold text-sm">Course Content</h3>
                 <Progress
                     value={progressPercentage}
-                    className="w-1/2 h-2.5 bg-blue-400 [&>[data-slot=progress-indicator]]:bg-white"
+                    className="w-1/2 h-2.5 bg-blue-400 *:data-[slot=progress-indicator]:bg-white"
                 />
                 <p className="text-xs font-medium">
-                    {completedLessonsIndex}/{totalLessons}
+                    {completedLessonsOrder}/{totalLessons}
                 </p>
             </div>
 
             <div className="max-h-[500px] overflow-y-auto">
                 {lessons.map((lesson, index) => {
-                    const isActive = index === currentLessonIndex;
-                    const isCompleted = index < completedLessonsIndex;
-                    const isLocked = index > completedLessonsIndex;
+                    const isActive = index === currentLessonOrder;
+                    const isCompleted = index < completedLessonsOrder;
+                    const isLocked = index > completedLessonsOrder;
 
                     return (
                         <LessonItem

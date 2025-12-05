@@ -4,3 +4,4 @@ export * from './course.type';
 export * from './common.type';
 export * from './enrollment.type';
 export * from './quizAttempt.type';
+export * from './assignment.type';
