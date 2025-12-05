@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client';
 
 import { Button } from '@/components/ui/button';
@@ -14,7 +16,6 @@ import {
 import { useDeleteCourseMutation } from '@/redux/api/courseApi';
 import { ICourse } from '@/types';
 import { useState } from 'react';
-import { FieldValues } from 'react-hook-form';
 import { toast } from 'sonner';
 
 type DeleteCourseProps = {
@@ -25,7 +26,7 @@ const DeleteCourse = ({ course }: DeleteCourseProps) => {
     const [deleteCourse] = useDeleteCourseMutation();
     const [open, setOpen] = useState(false);
 
-    const handleDelete = async (data: FieldValues) => {
+    const handleDelete = async () => {
         const toastId = toast.loading('Deleting course...');
         try {
             await deleteCourse(course._id).unwrap();

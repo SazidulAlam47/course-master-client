@@ -11,7 +11,6 @@ import {
     useGetQuizAttemptByLessonIdQuery,
 } from '@/redux/api/quizAttemptApi';
 import { toast } from 'sonner';
-import { is } from 'zod/v4/locales';
 import Loader from '@/components/shared/Loader';
 
 type QuizContentProps = {
@@ -108,11 +107,10 @@ const QuizContent = ({
                 focusConfirm: false,
                 confirmButtonText: 'Great!',
             });
-        } catch (error: any) {
+        } catch {
             toast.error('Failed to submit quiz. Please try again.', {
                 id: toastId,
             });
-            console.error('Failed to submit quiz:', error);
         }
     };
 

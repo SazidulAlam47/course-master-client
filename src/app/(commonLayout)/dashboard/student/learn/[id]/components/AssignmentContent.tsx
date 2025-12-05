@@ -54,11 +54,10 @@ const AssignmentContent = ({
                 id: toastId,
             });
             setIsSubmitted(true);
-        } catch (error: any) {
+        } catch {
             toast.error('Failed to submit assignment. Please try again.', {
                 id: toastId,
             });
-            console.error('Failed to submit assignment:', error);
         }
     };
 

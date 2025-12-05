@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import LInput from '@/components/form/LInput';
 import LSelect from '@/components/form/LSelect';
 import LTextarea from '@/components/form/LTextarea';
@@ -160,11 +162,8 @@ const FormFields = ({
     typeOptions: { value: string; label: string }[];
     quizQuestions: IQuizQuestion[];
     addQuizQuestion: () => void;
-    updateQuizQuestion: (
-        index: number,
-        field: keyof IQuizQuestion,
-        value: any
-    ) => void;
+    // eslint-disable-next-line no-unused-vars
+    updateQuizQuestion: (...args: any[]) => void;
 }) => {
     const selectedType = useWatch({ name: 'type' });
 

@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button';
-import { Play } from 'lucide-react';
 import Container from '../Container';
 import Image from 'next/image';
 import heroImage from '@/assets/hero.png';

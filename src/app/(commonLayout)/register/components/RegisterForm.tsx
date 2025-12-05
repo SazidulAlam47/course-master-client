@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client';
 import { Button } from '@/components/ui/button';
 import {
@@ -39,7 +41,6 @@ const RegisterForm = () => {
                 newUser.image = await uploadImageToCloudinary(data.file);
             }
             const registerRes = await registerUser(newUser);
-            console.log(registerRes);
 
             if (registerRes.success) {
                 const loginRes = await signIn('credentials', {

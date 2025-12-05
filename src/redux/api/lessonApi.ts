@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import { ILesson } from '@/types';
 import { baseApi } from './baseApi';
 

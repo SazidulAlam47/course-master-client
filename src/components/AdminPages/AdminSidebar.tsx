@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client';
 
 import Link from 'next/link';
@@ -15,7 +17,7 @@ import {
     SidebarFooter,
 } from '@/components/ui/sidebar';
 import { adminSidebarItems } from '@/constants/adminDashboard.constant';
-import { LayoutDashboard, LogOut } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import Image from 'next/image';
 import logo from '@/assets/logo-square.png';
 import { toast } from 'sonner';

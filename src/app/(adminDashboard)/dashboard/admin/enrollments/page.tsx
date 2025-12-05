@@ -1,7 +1,6 @@
 'use client';
 
-import { Users, Search } from 'lucide-react';
-import { Input } from '@/components/ui/input';
+import { Users } from 'lucide-react';
 import {
     Card,
     CardContent,

@@ -10,8 +10,6 @@ import EmptyPlaceholder from '@/components/shared/EmptyPlaceholder';
 const AdminCoursePage = () => {
     const { data: courses, isLoading } = useGetAllCoursesQuery({});
 
-    console.log(courses);
-
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">

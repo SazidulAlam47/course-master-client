@@ -41,7 +41,7 @@ const LearnPage = () => {
             setCurrentLessonOrder(enrollment.completedLessonOrder);
             setIsNavigatedToCompletedOrder(true);
         }
-    }, [enrollment?.completedLessonOrder, isNavigatedToCompletedOrder]);
+    }, [enrollment, isNavigatedToCompletedOrder]);
 
     const { data: currentLesson } = useGetLessonByOrderQuery(
         currentLessonOrder + 1
@@ -55,7 +55,7 @@ const LearnPage = () => {
         if (totalLessons === completedLessonsOrder) {
             setCurrentLessonOrder(totalLessons - 1);
         }
-    }, []);
+    }, [totalLessons, completedLessonsOrder]);
 
     const handleLessonSelect = (index: number) => {
         setCurrentLessonOrder(index);
@@ -78,11 +78,10 @@ const LearnPage = () => {
             if (newCompletedIndex < allLessons.length) {
                 setCurrentLessonOrder(newCompletedIndex);
             }
-        } catch (error: any) {
+        } catch {
             toast.error('Failed to update lesson progress. Please try again.', {
                 id: toastId,
             });
-            console.error('Failed to update lesson progress:', error);
         }
     };
 

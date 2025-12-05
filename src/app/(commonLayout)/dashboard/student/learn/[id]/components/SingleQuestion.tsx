@@ -8,7 +8,8 @@ type SingleQuestionProps = {
     question: QuizQuestion;
     questionIndex: number;
     selectedValue: string | undefined;
-    onSelectAnswer: (questionIndex: number, value: string) => void;
+    // eslint-disable-next-line no-unused-vars
+    onSelectAnswer: (number, string) => void;
     isSubmitted: boolean;
 };
 

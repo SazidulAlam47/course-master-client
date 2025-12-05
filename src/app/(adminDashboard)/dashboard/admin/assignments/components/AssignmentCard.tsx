@@ -11,7 +11,6 @@ import {
 } from '@/components/ui/card';
 import getInitials from '@/utils/getInitials';
 import { IAssignment } from '@/types';
-import GiveUpdateFeedback from './GiveUpdateFeedback';
 
 type AssignmentCardProps = {
     assignment: IAssignment;
