@@ -19,6 +19,13 @@ const enrollmentApi = baseApi.injectEndpoints({
             }),
             providesTags: ['enrollment'],
         }),
+        getAllEnrollments: build.query<IEnrollment[], any>({
+            query: () => ({
+                url: '/enrollments',
+                method: 'GET',
+            }),
+            providesTags: ['enrollment'],
+        }),
         getMyEnrollments: build.query<IEnrollment[], any>({
             query: () => ({
                 url: '/enrollments/my-enrollments',
@@ -50,4 +57,5 @@ export const {
     useGetMyEnrollmentsQuery,
     useUpdateEnrollmentCompletedOrderMutation,
     useInitPaymentMutation,
+    useGetAllEnrollmentsQuery,
 } = enrollmentApi;
