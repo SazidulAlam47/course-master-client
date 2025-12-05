@@ -7,6 +7,7 @@ import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
     Sheet,
+    SheetClose,
     SheetContent,
     SheetHeader,
     SheetTitle,
@@ -30,17 +31,18 @@ const MobileMenu = () => {
                 </SheetHeader>
                 <div className="flex flex-col space-y-4 mx-4">
                     {navLinks.map((link) => (
-                        <Link
-                            key={link.href}
-                            href={link.href}
-                            className={`text-md font-medium ${
-                                link.href === pathname
-                                    ? 'text-primary'
-                                    : 'text-gray-700'
-                            }`}
-                        >
-                            {link.label}
-                        </Link>
+                        <SheetClose key={link.href} asChild>
+                            <Link
+                                href={link.href}
+                                className={`text-md font-medium ${
+                                    link.href === pathname
+                                        ? 'text-primary'
+                                        : 'text-gray-700'
+                                }`}
+                            >
+                                {link.label}
+                            </Link>
+                        </SheetClose>
                     ))}
                 </div>
             </SheetContent>
