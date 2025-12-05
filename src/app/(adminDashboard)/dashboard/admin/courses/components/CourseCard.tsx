@@ -26,8 +26,8 @@ const CourseCard = ({ course }: CourseCardProps) => {
                         <Image
                             src={course.thumbnail!}
                             alt={course.title}
-                            width={64}
-                            height={64}
+                            width={300}
+                            height={300}
                             className="w-16 h-16 rounded-lg object-cover"
                         />
                         <div>
