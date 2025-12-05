@@ -4,9 +4,7 @@ import { ICourse, ILesson } from './course.type';
 export interface IInitPaymentResponse {
     paymentUrl: string;
 }
-export interface IUpdateEnrollmentPayload {
-    completedLessonIndex: number;
-}
+
 export type TPaymentStatus = (typeof PaymentStatus)[number];
 
 export interface IEnrollment {
@@ -14,7 +12,7 @@ export interface IEnrollment {
     studentId: string;
     courseId: ICourse;
     paymentStatus: TPaymentStatus;
-    completedLessonIndex: number;
+    completedLessonOrder: number;
     progress: number;
     totalLessons: number;
     lessons: ILesson[];

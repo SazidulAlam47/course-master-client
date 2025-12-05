@@ -1,23 +1,32 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { MdQuiz } from 'react-icons/md';
 import SingleQuestion from './SingleQuestion';
-import { QuizQuestion } from '@/types';
+import { IQuizQuestion } from '@/types';
 import Swal from 'sweetalert2';
+import {
+    useCreateQuizAttemptMutation,
+    useGetQuizAttemptByLessonIdQuery,
+} from '@/redux/api/quizAttemptApi';
+import { toast } from 'sonner';
+import { is } from 'zod/v4/locales';
+import Loader from '@/components/shared/Loader';
 
 type QuizContentProps = {
+    lessonId: string;
     title: string;
-    questions: QuizQuestion[];
-    onComplete: (score: number, total: number) => void;
+    questions: IQuizQuestion[];
+
     isCompleted: boolean;
 };
 
 const QuizContent = ({
+    lessonId,
     title,
     questions,
-    onComplete,
+
     isCompleted,
 }: QuizContentProps) => {
     const [selectedAnswers, setSelectedAnswers] = useState<{
@@ -25,6 +34,25 @@ const QuizContent = ({
     }>({});
     const [isSubmitted, setIsSubmitted] = useState(isCompleted);
     const [score, setScore] = useState(0);
+
+    const [createQuizAttempt] = useCreateQuizAttemptMutation();
+    const { data: quizAttempt, isLoading } =
+        useGetQuizAttemptByLessonIdQuery(lessonId);
+
+    useEffect(() => {
+        if (quizAttempt) {
+            const answersStrArray = quizAttempt.submittedAnswers.map((ans) =>
+                ans.toString()
+            );
+            const selectedAnsObj: { [key: number]: string } = Object.assign(
+                {},
+                answersStrArray
+            );
+            setSelectedAnswers(selectedAnsObj);
+            setScore(quizAttempt.score);
+            setIsSubmitted(true);
+        }
+    }, [quizAttempt]);
 
     const handleSelectAnswer = (questionIndex: number, value: string) => {
         if (isSubmitted) return;
@@ -34,22 +62,27 @@ const QuizContent = ({
         }));
     };
 
-    const handleSubmit = () => {
-        let correctCount = 0;
-        questions.forEach((question, index) => {
-            const selectedIndex = parseInt(selectedAnswers[index]);
-            if (selectedIndex === question.correctAnswer) {
-                correctCount++;
-            }
-        });
-        setScore(correctCount);
-        setIsSubmitted(true);
-        onComplete(correctCount, questions.length);
+    const handleSubmit = async () => {
+        const toastId = toast.loading('Submitting quiz...');
+        try {
+            const submittedAnswers = Object.values(selectedAnswers).map((ans) =>
+                parseInt(ans)
+            );
+            const payload = {
+                lessonId,
+                submittedAnswers,
+            };
+            const res = await createQuizAttempt(payload).unwrap();
 
-        Swal.fire({
-            title: 'Quiz Completed',
-            icon: 'success',
-            html: `
+            setScore(res.score);
+            setIsSubmitted(true);
+
+            toast.success('Quiz submitted successfully!', { id: toastId });
+
+            Swal.fire({
+                title: 'Quiz Completed',
+                icon: 'success',
+                html: `
                     <div class='space-y-2'>
                         <div>
                             <span class="font-semibold">Quiz:</span>
@@ -59,22 +92,28 @@ const QuizContent = ({
                             <span class="font-semibold">
                                 Your Score:
                             </span>
-                            ${correctCount}/${questions.length}
+                            ${res.score}/${questions.length}
                         </div>
                         <p>
                             ${
-                                correctCount === questions.length
+                                res.score === questions.length
                                     ? 'Perfect! Great job!'
-                                    : correctCount >= questions.length / 2
+                                    : res.score >= questions.length / 2
                                     ? 'Good work! Keep learning!'
                                     : 'Keep practicing, you can do better!'
                             }
                         </p>
                     </div>
                 `,
-            focusConfirm: false,
-            confirmButtonText: 'Great!',
-        });
+                focusConfirm: false,
+                confirmButtonText: 'Great!',
+            });
+        } catch (error: any) {
+            toast.error('Failed to submit quiz. Please try again.', {
+                id: toastId,
+            });
+            console.error('Failed to submit quiz:', error);
+        }
     };
 
     const allAnswered = questions.every(
@@ -90,47 +129,51 @@ const QuizContent = ({
                 </div>
             </div>
 
-            <div className="p-6">
-                {isSubmitted && (
-                    <div className="bg-[#1b7ad2]/10 border border-[#1b7ad2]/30 rounded-lg p-4 mb-6 text-center">
-                        <p className="text-[#1b7ad2] font-bold text-lg">
-                            Your Score: {score}/{questions.length}
-                        </p>
-                        <p className="text-gray-600 text-sm mt-1">
-                            {score === questions.length
-                                ? 'Perfect! Great job!'
-                                : score >= questions.length / 2
-                                ? 'Good work! Keep learning!'
-                                : 'Keep practicing, you can do better!'}
-                        </p>
-                    </div>
-                )}
+            {isLoading ? (
+                <Loader />
+            ) : (
+                <div className="p-6">
+                    {isSubmitted && (
+                        <div className="bg-[#1b7ad2]/10 border border-[#1b7ad2]/30 rounded-lg p-4 mb-6 text-center">
+                            <p className="text-[#1b7ad2] font-bold text-lg">
+                                Your Score: {score}/{questions.length}
+                            </p>
+                            <p className="text-gray-600 text-sm mt-1">
+                                {score === questions.length
+                                    ? 'Perfect! Great job!'
+                                    : score >= questions.length / 2
+                                    ? 'Good work! Keep learning!'
+                                    : 'Keep practicing, you can do better!'}
+                            </p>
+                        </div>
+                    )}
 
-                <div className="space-y-6">
-                    {questions.map((question, qIndex) => (
-                        <SingleQuestion
-                            key={qIndex}
-                            question={question}
-                            questionIndex={qIndex}
-                            selectedValue={selectedAnswers[qIndex]}
-                            onSelectAnswer={handleSelectAnswer}
-                            isSubmitted={isSubmitted}
-                        />
-                    ))}
+                    <div className="space-y-6">
+                        {questions.map((question, qIndex) => (
+                            <SingleQuestion
+                                key={qIndex}
+                                question={question}
+                                questionIndex={qIndex}
+                                selectedValue={selectedAnswers[qIndex]}
+                                onSelectAnswer={handleSelectAnswer}
+                                isSubmitted={isSubmitted}
+                            />
+                        ))}
+                    </div>
+
+                    {!isSubmitted && (
+                        <div className="flex justify-end mt-6">
+                            <Button
+                                onClick={handleSubmit}
+                                disabled={!allAnswered}
+                                className="bg-[#1b7ad2] hover:bg-[#1565b8] text-white px-6"
+                            >
+                                Submit Quiz
+                            </Button>
+                        </div>
+                    )}
                 </div>
-
-                {!isSubmitted && (
-                    <div className="flex justify-end mt-6">
-                        <Button
-                            onClick={handleSubmit}
-                            disabled={!allAnswered}
-                            className="bg-[#1b7ad2] hover:bg-[#1565b8] text-white px-6"
-                        >
-                            Submit Quiz
-                        </Button>
-                    </div>
-                )}
-            </div>
+            )}
         </div>
     );
 };

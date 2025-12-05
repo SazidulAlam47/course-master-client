@@ -1,9 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-    IEnrollment,
-    IInitPaymentResponse,
-    IUpdateEnrollmentPayload,
-} from '@/types';
+import { IEnrollment, IInitPaymentResponse } from '@/types';
 import { baseApi } from './baseApi';
 
 const enrollmentApi = baseApi.injectEndpoints({
@@ -30,14 +26,10 @@ const enrollmentApi = baseApi.injectEndpoints({
             }),
             providesTags: ['enrollment'],
         }),
-        updateEnrollment: build.mutation<
-            IEnrollment,
-            { id: string; data: IUpdateEnrollmentPayload }
-        >({
-            query: (args) => ({
-                url: `/enrollments/${args.id}`,
+        updateEnrollmentCompletedOrder: build.mutation<IEnrollment, string>({
+            query: (id) => ({
+                url: `/enrollments/${id}`,
                 method: 'PATCH',
-                data: args.data,
             }),
             invalidatesTags: ['enrollment'],
         }),
@@ -56,6 +48,6 @@ export const {
     useCreateEnrollmentMutation,
     useGetEnrollmentByIdQuery,
     useGetMyEnrollmentsQuery,
-    useUpdateEnrollmentMutation,
+    useUpdateEnrollmentCompletedOrderMutation,
     useInitPaymentMutation,
 } = enrollmentApi;

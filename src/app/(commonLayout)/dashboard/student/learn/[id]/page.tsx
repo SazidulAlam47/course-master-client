@@ -12,7 +12,7 @@ import QuizContent from './components/QuizContent';
 import { FaArrowLeft } from 'react-icons/fa6';
 import {
     useGetEnrollmentByIdQuery,
-    useUpdateEnrollmentMutation,
+    useUpdateEnrollmentCompletedOrderMutation,
 } from '@/redux/api/enrollmentApi';
 import { useParams } from 'next/navigation';
 import Loader from '@/components/shared/Loader';
@@ -23,24 +23,25 @@ const LearnPage = () => {
     const params = useParams();
     const id = params.id as string;
     const { data: enrollment, isLoading } = useGetEnrollmentByIdQuery(id);
-    const [updateEnrollment] = useUpdateEnrollmentMutation();
+    const [updateEnrollmentCompletedOrder] =
+        useUpdateEnrollmentCompletedOrderMutation();
 
     const [currentLessonIndex, setCurrentLessonIndex] = useState<number>(
-        enrollment?.completedLessonIndex || 0
+        enrollment?.completedLessonOrder || 0
     );
 
     useEffect(() => {
-        if (enrollment?.completedLessonIndex !== undefined) {
-            setCurrentLessonIndex(enrollment.completedLessonIndex);
+        if (enrollment?.completedLessonOrder !== undefined) {
+            setCurrentLessonIndex(enrollment.completedLessonOrder);
         }
-    }, [enrollment?.completedLessonIndex]);
+    }, [enrollment?.completedLessonOrder]);
 
     const { data: currentLesson } = useGetLessonByOrderQuery(
         currentLessonIndex + 1
     );
 
     const allLessons = enrollment?.lessons || [];
-    const completedLessonsIndex = enrollment?.completedLessonIndex || 0;
+    const completedLessonsIndex = enrollment?.completedLessonOrder || 0;
 
     const totalLessons = allLessons.length;
 
@@ -60,56 +61,13 @@ const LearnPage = () => {
         const toastId = toast.loading('Marking lesson as complete...');
         try {
             const newCompletedIndex = completedLessonsIndex + 1;
-            await updateEnrollment({
-                id,
-                data: { completedLessonIndex: newCompletedIndex },
-            }).unwrap();
+            await updateEnrollmentCompletedOrder(id).unwrap();
             toast.success('Lesson marked as complete!', { id: toastId });
             if (newCompletedIndex < allLessons.length) {
                 setCurrentLessonIndex(newCompletedIndex);
             }
         } catch (error: any) {
             toast.error('Failed to update lesson progress. Please try again.', {
-                id: toastId,
-            });
-            console.error('Failed to update lesson progress:', error);
-        }
-    };
-
-    const handleAssignmentSubmit = async (answer: string) => {
-        console.log('Assignment submitted:', answer);
-        const toastId = toast.loading('Submitting assignment...');
-        try {
-            const newCompletedIndex = completedLessonsIndex + 1;
-            await updateEnrollment({
-                id,
-                data: { completedLessonIndex: newCompletedIndex },
-            }).unwrap();
-            toast.success('Assignment submitted successfully!', {
-                id: toastId,
-            });
-        } catch (error: any) {
-            toast.error('Failed to submit assignment. Please try again.', {
-                id: toastId,
-            });
-            console.error('Failed to update lesson progress:', error);
-        }
-    };
-
-    const handleQuizComplete = async (score: number, total: number) => {
-        console.log(`Quiz completed: ${score}/${total}`);
-        const toastId = toast.loading('Submitting quiz results...');
-        try {
-            const newCompletedIndex = completedLessonsIndex + 1;
-            await updateEnrollment({
-                id,
-                data: { completedLessonIndex: newCompletedIndex },
-            }).unwrap();
-            toast.success(`Quiz completed! Score: ${score}/${total}`, {
-                id: toastId,
-            });
-        } catch (error: any) {
-            toast.error('Failed to submit quiz results. Please try again.', {
                 id: toastId,
             });
             console.error('Failed to update lesson progress:', error);
@@ -137,16 +95,15 @@ const LearnPage = () => {
                     <AssignmentContent
                         title={currentLesson.title}
                         task={currentLesson.assignmentTask || ''}
-                        onSubmit={handleAssignmentSubmit}
                         isCompleted={isCurrentCompleted}
                     />
                 );
             case 'quiz':
                 return (
                     <QuizContent
+                        lessonId={currentLesson._id}
                         title={currentLesson.title}
                         questions={currentLesson.quizQuestions || []}
-                        onComplete={handleQuizComplete}
                         isCompleted={isCurrentCompleted}
                     />
                 );

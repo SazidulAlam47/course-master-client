@@ -10,14 +10,14 @@ import { MdAssignment } from 'react-icons/md';
 type AssignmentContentProps = {
     title: string;
     task: string;
-    onSubmit: (answer: string) => void;
+
     isCompleted: boolean;
 };
 
 const AssignmentContent = ({
     title,
     task,
-    onSubmit,
+
     isCompleted,
 }: AssignmentContentProps) => {
     const [answer, setAnswer] = useState('');
@@ -26,7 +26,6 @@ const AssignmentContent = ({
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         if (answer.trim()) {
-            onSubmit(answer);
             setIsSubmitted(true);
         }
     };

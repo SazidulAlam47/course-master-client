@@ -12,5 +12,6 @@ export const baseApi = createApi({
         'category',
         'lesson',
         'enrollment',
+        'quizAttempt',
     ],
 });
