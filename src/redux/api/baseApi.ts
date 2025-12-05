@@ -14,5 +14,6 @@ export const baseApi = createApi({
         'enrollment',
         'quizAttempt',
         'assignment',
+        'meta',
     ],
 });
