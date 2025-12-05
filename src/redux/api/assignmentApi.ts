@@ -37,7 +37,7 @@ const assignmentApi = baseApi.injectEndpoints({
             }),
             providesTags: ['assignment'],
         }),
-        getAssignments: build.query<IAssignment[], any>({
+        getAllAssignments: build.query<IAssignment[], any>({
             query: () => ({
                 url: '/assignments',
                 method: 'GET',
@@ -51,5 +51,5 @@ export const {
     useCreateAssignmentMutation,
     useUpdateAssignmentMutation,
     useGetAssignmentByLessonIdQuery,
-    useGetAssignmentsQuery,
+    useGetAllAssignmentsQuery,
 } = assignmentApi;

@@ -1,4 +1,6 @@
-export type TLessonType = 'video' | 'assignment' | 'quiz';
+import { LessonTypes } from '@/constants/course.constant';
+
+export type TLessonType = (typeof LessonTypes)[number];
 
 export interface IQuizQuestion {
     question: string;

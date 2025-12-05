@@ -13,6 +13,9 @@ import {
     useGetAssignmentByLessonIdQuery,
 } from '@/redux/api/assignmentApi';
 import Loader from '@/components/shared/Loader';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { assignmentSchema } from '@/schemas/assignment.schema';
+import { TCreateAssignmentPayload } from '@/types';
 
 type AssignmentContentProps = {
     lessonId: string;
@@ -42,9 +45,9 @@ const AssignmentContent = ({
     const handleSubmit = async (data: FieldValues) => {
         const toastId = toast.loading('Submitting assignment...');
         try {
-            const payload = {
-                lessonId,
-                submissionText: data.submissionText,
+            const payload: TCreateAssignmentPayload = {
+                lessonId: lessonId,
+                submissionText: data.submissionText as string,
             };
             await createAssignment(payload).unwrap();
             toast.success('Assignment submitted successfully!', {
@@ -57,6 +60,10 @@ const AssignmentContent = ({
             });
             console.error('Failed to submit assignment:', error);
         }
+    };
+
+    const defaultValues = {
+        submissionText: assignment?.submissionText || '',
     };
 
     return (
@@ -110,10 +117,8 @@ const AssignmentContent = ({
                     ) : (
                         <LForm
                             onSubmit={handleSubmit}
-                            defaultValues={{
-                                submissionText:
-                                    assignment?.submissionText || '',
-                            }}
+                            defaultValues={defaultValues}
+                            resolver={zodResolver(assignmentSchema)}
                         >
                             <LTextarea
                                 name="submissionText"
