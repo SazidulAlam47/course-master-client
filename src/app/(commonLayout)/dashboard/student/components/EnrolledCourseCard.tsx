@@ -56,7 +56,7 @@ const EnrolledCourseCard = ({ enrollment }: EnrolledCourseProps) => {
                             </Button>
                         </Link>
                         <Link
-                            href={`/dashboard/student/learn/${enrollment.courseId._id}`}
+                            href={`/dashboard/student/learn/${enrollment._id}`}
                         >
                             <Button className="bg-[#1b7ad2] hover:bg-[#1565b8] text-white">
                                 {enrollment.progress > 0

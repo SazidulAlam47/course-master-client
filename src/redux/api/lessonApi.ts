@@ -4,9 +4,16 @@ import { baseApi } from './baseApi';
 
 const lessonApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
-        getLessonById: build.query<ILesson, any>({
+        getLessonById: build.query<ILesson, string>({
             query: (id) => ({
                 url: `/lessons/${id}`,
+                method: 'GET',
+            }),
+            providesTags: ['lesson'],
+        }),
+        getLessonByOrder: build.query<ILesson, number>({
+            query: (order) => ({
+                url: `/lessons/order/${order}`,
                 method: 'GET',
             }),
             providesTags: ['lesson'],
@@ -42,6 +49,7 @@ const lessonApi = baseApi.injectEndpoints({
 
 export const {
     useGetLessonByIdQuery,
+    useGetLessonByOrderQuery,
     useCreateLessonMutation,
     useUpdateLessonMutation,
     useDeleteLessonMutation,

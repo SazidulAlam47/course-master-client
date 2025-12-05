@@ -1,5 +1,5 @@
 import { PaymentStatus } from '@/constants/course.constant';
-import { ICourse } from './course.type';
+import { ICourse, ILesson } from './course.type';
 
 export interface IInitPaymentResponse {
     paymentUrl: string;
@@ -17,6 +17,7 @@ export interface IEnrollment {
     completedLessonIndex: number;
     progress: number;
     totalLessons: number;
+    lessons: ILesson[];
     createdAt: string;
     updatedAt: string;
 }

@@ -5,8 +5,8 @@ import EnrolledCourseCard from './components/EnrolledCourseCard';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { getMyEnrollments } from '@/services/actions/courseActions';
-
-
+import EmptyPlaceholder from '@/components/shared/EmptyPlaceholder';
+import { BookOpen } from 'lucide-react';
 
 const StudentDashboardPage = async () => {
     const session = await getServerSession(authOptions);
@@ -40,15 +40,21 @@ const StudentDashboardPage = async () => {
                             ))}
                         </div>
                     ) : (
-                        <div className="text-center py-16 bg-white rounded-xl border border-gray-200 shadow-sm">
-                            <p className="text-gray-500 text-lg mb-4">
-                                You haven&apos;t enrolled in any courses yet.
-                            </p>
-                            <Link href="/courses">
-                                <Button className="bg-[#1b7ad2] hover:bg-[#1565b8] text-white">
-                                    Browse Courses
-                                </Button>
-                            </Link>
+                        <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
+                            <EmptyPlaceholder
+                                Icon={BookOpen}
+                                title="No Courses Enrolled"
+                                description="You haven't enrolled in any courses yet."
+                                className="min-h-0"
+                            >
+                                <div className="text-center mt-1">
+                                    <Link href="/courses">
+                                        <Button className="bg-[#1b7ad2] hover:bg-[#1565b8] text-white">
+                                            Browse Courses
+                                        </Button>
+                                    </Link>
+                                </div>
+                            </EmptyPlaceholder>
                         </div>
                     )}
                 </div>

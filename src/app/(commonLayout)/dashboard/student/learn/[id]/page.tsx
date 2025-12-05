@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import Container from '@/components/Container';
 import { Button } from '@/components/ui/button';
@@ -10,108 +10,39 @@ import NavigationButtons from './components/NavigationButtons';
 import AssignmentContent from './components/AssignmentContent';
 import QuizContent from './components/QuizContent';
 import { FaArrowLeft } from 'react-icons/fa6';
-import { Lesson } from '@/types';
-
-const lessonsData: Lesson[] = [
-    {
-        title: 'How to access the course',
-        duration: '12 min',
-        type: 'video',
-        videoId: 'dQw4w9WgXcQ',
-    },
-    {
-        title: 'How To Practice And Build Your Own',
-        duration: '10 min',
-        type: 'video',
-        videoId: 'tVzUXW6siu0',
-    },
-    {
-        title: 'Assignment 1',
-        duration: '',
-        type: 'assignment',
-        task: 'https://drive.google.com/drive/folders/19hcFwr3WShODOfR7hXJ1oQogs5LKDX8L?usp=sharing',
-    },
-    {
-        title: 'how to get support effectively',
-        duration: '15 min',
-        type: 'video',
-        videoId: 'tVzUXW6siu0',
-    },
-    {
-        title: 'HTML Quiz',
-        duration: '',
-        type: 'quiz',
-        questions: [
-            {
-                question: 'What does HTML stand for?',
-                options: [
-                    'Hyper Text Markup Language',
-                    'Hyperlink and Text Markup Language',
-                    'Home Tool Markup Language',
-                    'Hyperlink Text Manager Link',
-                ],
-                correctAnswer: 0,
-            },
-            {
-                question: 'Which HTML tag is used to define a paragraph?',
-                options: ['<para>', '<p>', '<paragraph>', '<pg>'],
-                correctAnswer: 1,
-            },
-            {
-                question:
-                    'Which tag is used to display the largest heading in HTML?',
-                options: ['<h6>', '<head>', '<h1>', '<heading>'],
-                correctAnswer: 2,
-            },
-            {
-                question:
-                    'What is the correct HTML tag for inserting a line break?',
-                options: ['<lb>', '<break>', '<br>', '<line>'],
-                correctAnswer: 2,
-            },
-        ],
-    },
-    {
-        title: '(mac user only) Install Visual Studio Code Node Git SCM And Github Account',
-        duration: '15 min',
-        type: 'video',
-        videoId: 'tVzUXW6siu0',
-    },
-    {
-        title: 'VS Code Extensions And Settings',
-        duration: '10 min',
-        type: 'video',
-        videoId: 'tVzUXW6siu0',
-    },
-    {
-        title: 'Introduction To HTML',
-        duration: '18 min',
-        type: 'video',
-        videoId: 'tVzUXW6siu0',
-    },
-    {
-        title: 'HTML Basic Structure And Tags',
-        duration: '20 min',
-        type: 'video',
-        videoId: 'tVzUXW6siu0',
-    },
-];
+import {
+    useGetEnrollmentByIdQuery,
+    useUpdateEnrollmentMutation,
+} from '@/redux/api/enrollmentApi';
+import { useParams } from 'next/navigation';
+import Loader from '@/components/shared/Loader';
+import { useGetLessonByOrderQuery } from '@/redux/api/lessonApi';
+import { toast } from 'sonner';
 
 const LearnPage = () => {
-    const fetchedCurrentLessonIndex = 4;
-
-    const [completedLessonsIndex, setCompletedLessonsIndex] = useState<number>(
-        fetchedCurrentLessonIndex || 0
-    );
+    const params = useParams();
+    const id = params.id as string;
+    const { data: enrollment, isLoading } = useGetEnrollmentByIdQuery(id);
+    const [updateEnrollment] = useUpdateEnrollmentMutation();
 
     const [currentLessonIndex, setCurrentLessonIndex] = useState<number>(
-        fetchedCurrentLessonIndex || 0
+        enrollment?.completedLessonIndex || 0
     );
 
-    const allLessons = lessonsData;
+    useEffect(() => {
+        if (enrollment?.completedLessonIndex !== undefined) {
+            setCurrentLessonIndex(enrollment.completedLessonIndex);
+        }
+    }, [enrollment?.completedLessonIndex]);
+
+    const { data: currentLesson } = useGetLessonByOrderQuery(
+        currentLessonIndex + 1
+    );
+
+    const allLessons = enrollment?.lessons || [];
+    const completedLessonsIndex = enrollment?.completedLessonIndex || 0;
 
     const totalLessons = allLessons.length;
-    const currentLesson = allLessons[currentLessonIndex];
 
     const handleLessonSelect = (index: number) => {
         setCurrentLessonIndex(index);
@@ -125,21 +56,64 @@ const LearnPage = () => {
         setCurrentLessonIndex(currentLessonIndex + 1);
     };
 
-    const handleMarkComplete = () => {
-        setCompletedLessonsIndex(completedLessonsIndex + 1);
-        if (completedLessonsIndex < lessonsData.length - 1) {
-            setCurrentLessonIndex(completedLessonsIndex + 1);
+    const handleMarkComplete = async () => {
+        const toastId = toast.loading('Marking lesson as complete...');
+        try {
+            const newCompletedIndex = completedLessonsIndex + 1;
+            await updateEnrollment({
+                id,
+                data: { completedLessonIndex: newCompletedIndex },
+            }).unwrap();
+            toast.success('Lesson marked as complete!', { id: toastId });
+            if (newCompletedIndex < allLessons.length) {
+                setCurrentLessonIndex(newCompletedIndex);
+            }
+        } catch (error: any) {
+            toast.error('Failed to update lesson progress. Please try again.', {
+                id: toastId,
+            });
+            console.error('Failed to update lesson progress:', error);
         }
     };
 
-    const handleAssignmentSubmit = (answer: string) => {
+    const handleAssignmentSubmit = async (answer: string) => {
         console.log('Assignment submitted:', answer);
-        setCompletedLessonsIndex(completedLessonsIndex + 1);
+        const toastId = toast.loading('Submitting assignment...');
+        try {
+            const newCompletedIndex = completedLessonsIndex + 1;
+            await updateEnrollment({
+                id,
+                data: { completedLessonIndex: newCompletedIndex },
+            }).unwrap();
+            toast.success('Assignment submitted successfully!', {
+                id: toastId,
+            });
+        } catch (error: any) {
+            toast.error('Failed to submit assignment. Please try again.', {
+                id: toastId,
+            });
+            console.error('Failed to update lesson progress:', error);
+        }
     };
 
-    const handleQuizComplete = (score: number, total: number) => {
+    const handleQuizComplete = async (score: number, total: number) => {
         console.log(`Quiz completed: ${score}/${total}`);
-        setCompletedLessonsIndex(completedLessonsIndex + 1);
+        const toastId = toast.loading('Submitting quiz results...');
+        try {
+            const newCompletedIndex = completedLessonsIndex + 1;
+            await updateEnrollment({
+                id,
+                data: { completedLessonIndex: newCompletedIndex },
+            }).unwrap();
+            toast.success(`Quiz completed! Score: ${score}/${total}`, {
+                id: toastId,
+            });
+        } catch (error: any) {
+            toast.error('Failed to submit quiz results. Please try again.', {
+                id: toastId,
+            });
+            console.error('Failed to update lesson progress:', error);
+        }
     };
 
     const isCurrentCompleted = currentLessonIndex < completedLessonsIndex;
@@ -162,7 +136,7 @@ const LearnPage = () => {
                 return (
                     <AssignmentContent
                         title={currentLesson.title}
-                        task={currentLesson.task || ''}
+                        task={currentLesson.assignmentTask || ''}
                         onSubmit={handleAssignmentSubmit}
                         isCompleted={isCurrentCompleted}
                     />
@@ -171,7 +145,7 @@ const LearnPage = () => {
                 return (
                     <QuizContent
                         title={currentLesson.title}
-                        questions={currentLesson.questions || []}
+                        questions={currentLesson.quizQuestions || []}
                         onComplete={handleQuizComplete}
                         isCompleted={isCurrentCompleted}
                     />
@@ -187,6 +161,10 @@ const LearnPage = () => {
                 );
         }
     };
+
+    if (isLoading) {
+        return <Loader />;
+    }
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -219,7 +197,7 @@ const LearnPage = () => {
                     </div>
                     <div className="lg:col-span-1">
                         <LessonSidebar
-                            lessons={lessonsData}
+                            lessons={allLessons}
                             currentLessonIndex={currentLessonIndex}
                             completedLessonsIndex={completedLessonsIndex}
                             totalLessons={totalLessons}
