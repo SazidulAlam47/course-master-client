@@ -30,11 +30,18 @@ const LearnPage = () => {
         enrollment?.completedLessonOrder || 0
     );
 
+    const [isNavigatedToCompletedIndex, setIsNavigatedToCompletedIndex] =
+        useState(false);
+
     useEffect(() => {
-        if (enrollment?.completedLessonOrder !== undefined) {
+        if (
+            !isNavigatedToCompletedIndex &&
+            enrollment?.completedLessonOrder !== undefined
+        ) {
             setCurrentLessonIndex(enrollment.completedLessonOrder);
+            setIsNavigatedToCompletedIndex(true);
         }
-    }, [enrollment?.completedLessonOrder]);
+    }, [enrollment?.completedLessonOrder, isNavigatedToCompletedIndex]);
 
     const { data: currentLesson } = useGetLessonByOrderQuery(
         currentLessonIndex + 1
