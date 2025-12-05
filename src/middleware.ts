@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { TDecodedUser } from './types';
 import { getToken, JWT } from 'next-auth/jwt';
 
-const AuthRoutes = ['/login', '/register', '/forgot-password'];
 const commonPrivateRoutes = [
     '/dashboard',
     '/dashboard/profile',
@@ -20,9 +19,6 @@ export async function middleware(req: NextRequest) {
     const user = (await getToken({ req })) as TDecodedUser & JWT;
 
     if (!user) {
-        if (AuthRoutes.includes(pathname)) {
-            return NextResponse.next();
-        }
         return NextResponse.redirect(new URL('/login', req.url));
     }
 
@@ -53,5 +49,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/login', '/register', '/forgot-password', '/dashboard/:page*'],
+    matcher: ['/dashboard/:page*'],
 };
